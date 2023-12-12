@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-box">
+    <div class="form-container">
+        <div class="form-content">
+            <h3>Sign Up</h3>
+            <form method="post" action="">
+                {% csrf_token %}
+                <p>{{ form.username }}</p>
+                <p>{{ form.password1 }}</p>
+                <p>{{ form.password2 }}</p>
+                <input type="submit" name="Create User" value="Sign Up" class="form-button">
+            </form>
+            <p style="width: fit-content; margin-right: auto; margin-left: auto; font-size: 0.8em" >
+                Already have an account?
+                <a href="/login" style="text-decoration: none; color: blue">Sign in</a>
+            </p>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
