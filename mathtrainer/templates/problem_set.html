@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content%}
+<div class="problem-table-container">
+    <div class="filter-btn-container">
+        <a class="{% if problem_type == 'all' %}active{% endif %}"  href="/problems/all">All Problems</a>
+        <a class="{% if problem_type == 'prealgebra' %}active{% endif %}"  href="/problems/prealgebra">Prealgebra</a>
+        <a class="{% if problem_type == 'number-theory' %}active{% endif %}"  href="/problems/number-theory">Number Theory</a>
+        <a class="{% if problem_type == 'counting-and-probability' %}active{% endif %}"  href="/problems/counting-and-probability">Counting and Probability</a>
+        <a class="{% if problem_type == 'precalculus' %}active{% endif %}"  href="/problems/precalculus">Precalculus</a>
+        <a class="{% if problem_type == 'geometry' %}active{% endif %}"  href="/problems/geometry">Geometry</a>
+        <a class="{% if problem_type == 'algebra' %}active{% endif %}"  href="/problems/algebra">Algebra</a>
+        <a class="{% if problem_type == 'intermediate-algebra' %}active{% endif %}"  href="/problems/intermediate-algebra">Intermediate Algebra</a>
+    </div>
+
+    <table class="problem-table">
+        <thead>
+            <tr>
+                <td class="status-cell">Status</td>
+                <td class="title-cell">Title</td>
+                <td class="difficulty-cell">Difficulty</td>
+            </tr>
+        </thead>
+        {% for item in problems %}
+            <tr>
+                <td class="status-cell"> </td>
+                <td class="title-cell"> <a href="/problem/{{ item.title }}">{{ item.id }}. {{ item.title | titleize }}</a></td>
+                <td class="difficulty-cell"> {{ item.level }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <ul class="page-nav-container">
+
+
+        <li class="{% if not problems.has_previous %}disabled{% endif %}"><a href="?page={% if problems.has_previous %}{{ problems.previous_page_number }}{% endif %}">Prev</a></li>
+
+        {%  page_limits problems.number 5 problems.paginator.num_pages as page_limits %}
+        {% if page_limits.0|add:-5 > 0%}
+            <li ><a href="?page={{ page_limits.0|add:-5 }}">...</a></li>
+        {% endif %}
+
+        {% for page in page_limits %}
+            <li class="{% if page == problems.number %}active{% endif %}"><a href="?page={{ page }}">{{ page }}</a></li>
+        {% endfor %}
+
+        {% if page_limits.0|add:5 <= problems.paginator.num_pages %}
+            <li><a href="?page={{ page_limits.0|add:5 }}">...</a></li>
+        {% endif %}
+
+        <li class="{% if not problems.has_next %}disabled{% endif %}"><a href="?page={% if problems.has_next %}{{ problems.next_page_number }}{% endif %}">Next</a></li>
+
+    </ul>
+</div>
+{% endblock %}
+
+

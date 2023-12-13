@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content %}
+<div class="problem-page" >
+  <span class="problem-title">{{ problem.title | titleize }}</span>
+  <div class="problem-question">
+    {{ problem.problem }}
+    <label>
+        <input class="answer-input"></input>
+    </label>
+  </div>
+  <a href="">Report Problem</a>
+{#  <div class="problem-question">#}
+{#    {{ problem.solution}}#}
+{#  </div>#}
+
+</div>
+{%  endblock %}
