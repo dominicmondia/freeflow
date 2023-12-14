@@ -38,7 +38,6 @@
         {% if page_limits.0|add:-5 > 0%}
             <li ><a href="?page={{ page_limits.0|add:-5 }}">...</a></li>
         {% endif %}
-
         {% for page in page_limits %}
             <li class="{% if page == problems.number %}active{% endif %}"><a href="?page={{ page }}">{{ page }}</a></li>
         {% endfor %}

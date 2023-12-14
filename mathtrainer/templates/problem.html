@@ -1,18 +1,46 @@
 {% extends 'base.html' %}
 {% load custom_filters %}
 {% block content %}
-<div class="problem-page" >
-  <span class="problem-title">{{ problem.title | titleize }}</span>
-  <div class="problem-question">
-    {{ problem.problem }}
-    <label>
-        <input class="answer-input"></input>
-    </label>
-  </div>
-  <a href="">Report Problem</a>
-{#  <div class="problem-question">#}
-{#    {{ problem.solution}}#}
-{#  </div>#}
+    <div class="problem-page">
+        <span class="title">{{ problem.title | titleize }}</span>
+        <div class="problem-question">
+            {{ problem.problem }}
+            <form method="post">
+                {% csrf_token %}
+                <label>
+                    <input class="answer-input" name="user_answer" autocomplete="off">
+                </label>
+            </form>
+        </div>
 
-</div>
-{%  endblock %}
+        <div class="problem-footer">
+            {% for message in messages %}
+                {% if message|stringyfy == "attempted" %}
+                    <button class="show-solution-btn" id="show-solution-btn">Show Solution</button>
+                {% elif message|stringyfy == "incorrect" %}
+                    <p>Not quite, Try again!</p>
+                {% else %}
+                    <p>Great Job!</p>
+                {% endif %}
+            {% endfor %}
+            <a href="">Report Problem</a>
+        </div>
+
+        <span class="title" id="title" style="width: 70%; display: none">Solution</span>
+        <div class="problem-solution" id="problem-solution" style="display: none">
+            {{ problem.solution }}
+        </div>
+
+    </div>
+    <script>
+        const el = document.getElementById("show-solution-btn");
+        if (el) {
+            el.addEventListener("click", () => {
+                document.getElementById("title").style.display = "flex";
+                document.getElementById("problem-solution").style.display = "block";
+            })
+        }
+    </script>
+
+{% endblock %}
+

@@ -149,7 +149,7 @@ a, a:visited, a:hover, a:active {
   max-width: 1000px;
   height: fit-content;
 
-  .problem-title {
+  .title {
     display: flex;
     font-size: large;
     height: fit-content;
@@ -181,13 +181,52 @@ a, a:visited, a:hover, a:active {
     margin: 20px 0 ;
   }
 
-  a{
+  .problem-footer {
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
     width: 70%;
-    margin: 10px auto;
-    justify-content: flex-end;
-    color: grey;
-    font-size: small;
+    margin: 0.5em auto 2em;
+    align-content: center;
+    gap: 0 1em;
+    font-size: 13px;
+
+    * {
+      min-width: 150px;
+    }
+
+    p {
+      display: inline-flex;
+      align-self: center;
+      margin: 0;
+      width: fit-content;
+    }
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      font: inherit;
+      padding: 0;
+      border: 0;
+      background-color: transparent;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    a {
+      display: inline-flex;
+      width: fit-content;
+      align-self: center;
+      color: grey;
+      font-size: small;
+    }
+  }
+
+  .problem-solution {
+    display: block;
+    width: 70%;
+    margin: 2rem auto 0;
+    border-bottom:1px solid rgba(0, 0, 0, 0.25);
   }
 }
 
@@ -225,26 +264,31 @@ a, a:visited, a:hover, a:active {
 
   table{
     border-collapse: collapse;
+
+    thead{
+      color: grey;
+      border-bottom: 1px solid #eeeeee;
+    }
+
+    tr{
+      line-height: 2.5em;
+    }
+
+    tr:nth-child(even){
+      background: #c2dfe3 linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75));
+    }
+
+    .status-cell, .difficulty-cell {
+      width: 1%;
+      white-space: nowrap;
+      padding: 1px 20px 1px 0;
+    }
+
+    a{
+      text-decoration: none;
+    }
   }
 
-  thead{
-    color: grey;
-    border-bottom: 1px solid #eeeeee;
-  }
-
-  tr:nth-child(even){
-    background: #c2dfe3 linear-gradient(rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75));
-  }
-
-  .status-cell, .difficulty-cell {
-    width: 1%;
-    white-space: nowrap;
-    padding: 1px 20px 1px 0;
-  }
-
-  a{
-    text-decoration: none;
-  }
 
   ul.page-nav-container{
     padding: 0;

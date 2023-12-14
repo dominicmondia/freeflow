@@ -18,7 +18,12 @@ def page_limits(curr_page, page_limit, num_pages):
     if curr_page % page_limit == 0:
         lower_limit = curr_page - page_limit + 1
         higher_limit = curr_page + 1
-    higher_limit = num_pages if higher_limit > num_pages + 1 else higher_limit
+    higher_limit = num_pages + 1 if higher_limit > num_pages else higher_limit
     if higher_limit == lower_limit:
         higher_limit += 1
     return range(lower_limit, higher_limit)
+
+
+@register.filter
+def stringyfy(var):
+    return str(var)
