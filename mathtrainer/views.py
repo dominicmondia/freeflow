@@ -137,7 +137,7 @@ def problem(request, pk):
 
 
 def problem_set(request, problem_type):
-    problems = Problem.objects.all() if problem_type == 'all' else Problem.objects.filter(type_id=problem_type)
+    problems = Problem.objects.all() if problem_type == 'all' else Problem.objects.filter(type=problem_type)
     problem_set_paginator = Paginator(problems, 20)
     page = request.GET.get('page')
     problems = problem_set_paginator.get_page(page)
