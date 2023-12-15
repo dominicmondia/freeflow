@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.utils.decorators import method_decorator
+from .filters import ProblemFilter
 
 from .forms import RegistrationForm
 from .models import Problem
@@ -138,7 +138,13 @@ def problem(request, pk):
 
 def problem_set(request, problem_type):
     problems = Problem.objects.all() if problem_type == 'all' else Problem.objects.filter(type=problem_type)
+
+    problem_filter = ProblemFilter(request.GET, queryset=problems)
+    problems = problem_filter.qs
     problem_set_paginator = Paginator(problems, 20)
     page = request.GET.get('page')
+
     problems = problem_set_paginator.get_page(page)
-    return render(request, 'problem_set.html', {'problems': problems, 'problem_type': problem_type})
+    return render(request,
+                  'problem_set.html',
+                  {'problems': problems, 'problem_type': problem_type, 'filter': problem_filter})
