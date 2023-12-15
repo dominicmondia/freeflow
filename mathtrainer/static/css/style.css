@@ -180,7 +180,7 @@ a, a:visited, a:hover, a:active {
     .answer-input {
         display: block;
         width: 15vw;
-        min-width: 150px;
+        min-width: 120px;
         font: inherit;
         border-radius: 10px;
         padding: 0.5em;
