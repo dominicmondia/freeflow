@@ -17,7 +17,7 @@
                href="/problems/intermediate-algebra">Intermediate Algebra</a>
         </div>
 
-        <form method="get" action=""  autocomplete="off">
+        <form id="filter" method="get" action=""  autocomplete="off">
             {{ filter.form }}
         </form>
 
@@ -65,8 +65,6 @@
     </div>
     <script>
         document.getElementById("id_q").setAttribute("placeholder", "Search Problem");
-    </script>
-    <script>
         document.getElementById("id_level").setAttribute("onchange", "this.form.submit()");
         document.getElementById("id_level").options[0].innerHTML = 'Difficulty';
     </script>
