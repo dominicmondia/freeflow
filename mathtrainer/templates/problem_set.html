@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load custom_filters %}
 {% block content %}
     <div class="problem-table-container">
@@ -31,7 +32,13 @@
             </thead>
             {% for item in problems %}
                 <tr>
-                    <td class="status-cell"></td>
+                    <td class="status-cell">
+                        {% if item|get_status:user_history == 's' %}
+                        	<img src="{% static 'img/check.svg' %}" alt="check" title="solved">
+                        {% elif item|get_status:user_history == 'a'%}
+                            <img src="{% static 'img/minus.svg' %}" alt="minus" title="attempted">
+                        {% endif %}
+                    </td>
                     <td class="title-cell"><a
                             href="/problem/{{ item.title }}">{{ item.id }}. {{ item.title | titleize }}</a></td>
                     <td class="difficulty-cell"> {{ item.level }}</td>

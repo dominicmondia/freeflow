@@ -317,8 +317,17 @@ a, a:visited, a:hover, a:active {
 
         .status-cell, .difficulty-cell {
             width: 1%;
+            height: auto;
             white-space: nowrap;
             padding: 1px 20px 1px 0;
+            text-align: center;
+
+        }
+
+        .status-cell > img{
+            width: 35%;
+            height: auto;
+            vertical-align: middle;
         }
 
         a {

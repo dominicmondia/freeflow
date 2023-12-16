@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from .filters import ProblemFilter
 
 from .forms import RegistrationForm
-from .models import Problem
+from .models import Problem, UserProfile
 
 import sympy as sp
 from sympy.parsing.latex import parse_latex
@@ -54,6 +54,7 @@ def signout(request):
 
 def problem(request, pk):
     item = Problem.objects.get(title=pk)
+    user = request.user
 
     def is_equal(expr1, expr2):
         def latex_parser(expr):
@@ -127,23 +128,36 @@ def problem(request, pk):
         correct_answer = item.answer
         if is_equal(user_answer, correct_answer):
             messages.info(request, "correct")
+            status = 's'
         else:
             messages.info(request, "incorrect")
-            messages.info(request, is_equal(user_answer, correct_answer))
+            status = 'a'
+        if user.is_authenticated:
+            user_profile = UserProfile.objects.get(user=user)
+            user_profile.history[item.id] = status
+            user_profile.save()
         messages.info(request, "attempted")
         return redirect(f'/problem/{pk}')
     return render(request, 'problem.html', {'problem': item})
 
 
 def problem_set(request, problem_type):
+    user = request.user
     problems = Problem.objects.all() if problem_type == 'all' else Problem.objects.filter(type=problem_type)
 
     problem_filter = ProblemFilter(request.GET, queryset=problems)
     problems = problem_filter.qs
     problem_set_paginator = Paginator(problems, 20)
     page = request.GET.get('page')
-
     problems = problem_set_paginator.get_page(page)
+
+    if user.is_authenticated:
+        user_profile = UserProfile.objects.get(user=user)
+        user_history = user_profile.history
+    else:
+        user_history = {}
+
     return render(request,
                   'problem_set.html',
-                  {'problems': problems, 'problem_type': problem_type, 'filter': problem_filter})
+                  {'problems': problems, 'problem_type': problem_type, 'filter': problem_filter,
+                   'user_history': user_history})

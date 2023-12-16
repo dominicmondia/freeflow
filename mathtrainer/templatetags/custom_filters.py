@@ -27,3 +27,11 @@ def page_limits(curr_page, page_limit, num_pages):
 @register.filter
 def stringyfy(var):
     return str(var)
+
+
+@register.filter
+def get_status(item, user_history):
+    if str(item.id) in user_history.keys():
+        return user_history[str(item.id)]
+    else:
+        return ''

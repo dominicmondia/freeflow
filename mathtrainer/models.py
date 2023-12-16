@@ -26,3 +26,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     history = models.JSONField(default=dict)
 
+    def __str__(self):
+        return self.user.username
+
