@@ -57,7 +57,14 @@
                 <li><a href="?page={{ page_limits.0|add:-5 }}">...</a></li>
             {% endif %}
             {% for page in page_limits %}
-                <li class="{% if page == problems.number %}active{% endif %}"><a href="?page={{ page }}">{{ page }}</a>
+                {% if 'page' in request.get_full_path %}
+                	<li class="{% if page == problems.number %}active{% endif %}"><a href="{{ request.get_full_path|slice:":-1" }}{{ page }}">{{ page }}</a>
+                {% elif '?' in request.get_full_path%}
+                    <li class="{% if page == problems.number %}active{% endif %}"><a href="{{ request.get_full_path }}&page={{ page }}">{{ page }}</a>
+                {% else %}
+                    <li class="{% if page == problems.number %}active{% endif %}"><a href="{{ request.get_full_path }}?page={{ page }}">{{ page }}</a>
+                {% endif %}
+
                 </li>
             {% endfor %}
 

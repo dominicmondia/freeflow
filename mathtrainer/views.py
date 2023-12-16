@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from .filters import ProblemFilter
 
 from .forms import RegistrationForm
-from .models import Problem, UserProfile
+from .models import Problem, UserProfile, ProblemReport
 
 import sympy as sp
 from sympy.parsing.latex import parse_latex
@@ -15,6 +15,10 @@ import pint
 # Create your views here.
 def home(request):
     return render(request, 'home.html')
+
+
+def about(request):
+    return render(request, 'about.html')
 
 
 def signup(request):
@@ -124,20 +128,24 @@ def problem(request, pk):
             return sp.simplify(mag1 - mag2) == 0 and units1 == units2
 
     if request.method == 'POST':
-        user_answer = request.POST.get('user_answer')
-        correct_answer = item.answer
-        if is_equal(user_answer, correct_answer):
-            messages.info(request, "correct")
-            status = 's'
+        if 'user_answer' in request.POST:
+            user_answer = request.POST.get('user_answer')
+            correct_answer = item.answer
+            if is_equal(user_answer, correct_answer):
+                messages.info(request, "correct")
+                status = 's'
+            else:
+                messages.info(request, "incorrect")
+                status = 'a'
+            if user.is_authenticated:
+                user_profile = UserProfile.objects.get(user=user)
+                user_profile.history[item.id] = status
+                user_profile.save()
+            messages.info(request, "attempted")
+            return redirect(f'/problem/{pk}')
         else:
-            messages.info(request, "incorrect")
-            status = 'a'
-        if user.is_authenticated:
-            user_profile = UserProfile.objects.get(user=user)
-            user_profile.history[item.id] = status
-            user_profile.save()
-        messages.info(request, "attempted")
-        return redirect(f'/problem/{pk}')
+            report = ProblemReport(problem_id=item, description=request.POST.get('description'))
+            report.save()
     return render(request, 'problem.html', {'problem': item})
 
 
@@ -149,13 +157,14 @@ def problem_set(request, problem_type):
     problems = problem_filter.qs
     problem_set_paginator = Paginator(problems, 20)
     page = request.GET.get('page')
-    problems = problem_set_paginator.get_page(page)
 
     if user.is_authenticated:
         user_profile = UserProfile.objects.get(user=user)
         user_history = user_profile.history
     else:
         user_history = {}
+
+    problems = problem_set_paginator.get_page(page)
 
     return render(request,
                   'problem_set.html',

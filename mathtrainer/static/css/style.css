@@ -106,6 +106,100 @@ a, a:visited, a:hover, a:active {
     }
 }
 
+.about {
+    width: 100svw;
+    max-width: 1200px;
+    justify-content: center;
+
+    .page-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100svw;
+        max-width: 700px;
+        padding: 0 10px;
+        margin: 2em auto;
+
+        .card-container {
+            width: 272px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #F5F5F5;
+            border-radius: 10px;
+            overflow: hidden;
+
+            .info--name {
+                font-size: 1em;
+                font-weight: 600;
+                color: black;
+                margin: auto;
+                padding-top: 1em;
+                padding-bottom: 0.5em;
+            }
+
+            .info--title {
+                color: black;
+                margin: auto;
+                padding-bottom: 1em;
+                font-size: 0.8em;
+                font-weight: 400;
+            }
+
+            .info--button-container {
+                display: flex;
+                justify-content: center;
+                margin: auto;
+                gap: 1em;
+                padding: 0;
+            }
+
+            a {
+                text-decoration: none;
+            }
+
+            button {
+                display: flex;
+                font: inherit;
+                justify-content: center;
+                width: 100px;
+                align-items: center;
+                padding: 0.2em;
+                font-size: 0.9em;
+                font-weight: 500;
+                border-radius: 6px;
+            }
+
+            .info--linkedin-btn {
+                color: white;
+                background-color: #5093E2;
+                border: 1px solid #5093E2;
+            }
+
+            .info--email-btn {
+                border: 1px solid #D1D5DB;
+            }
+
+            .info--about {
+                width: 220px;
+                margin: auto;
+                text-align: left;
+                font-size: 1em;
+
+                h3 {
+                    font-size: 1em;
+                    margin-bottom: 0;
+                }
+
+                p {
+                    font-size: 0.8em;
+                    margin-top: 0.5em;
+                }
+            }
+
+        }
+    }
+
+}
+
 .form-box {
     width: 350px;
     min-height: 600px;
@@ -141,7 +235,7 @@ a, a:visited, a:hover, a:active {
                 background-color: #C2DFE3;
             }
 
-            .errorlist{
+            .errorlist {
                 list-style: none;
                 margin: auto auto 0;
                 padding: 0;
@@ -152,7 +246,7 @@ a, a:visited, a:hover, a:active {
 
 .problem-page {
     display: flex;
-    /*flex-wrap: wrap;*/
+    flex-wrap: wrap;
     flex-direction: column;
     margin: 10vh auto;
     width: 100%;
@@ -324,7 +418,7 @@ a, a:visited, a:hover, a:active {
 
         }
 
-        .status-cell > img{
+        .status-cell > img {
             width: 35%;
             height: auto;
             vertical-align: middle;
@@ -373,6 +467,89 @@ a, a:visited, a:hover, a:active {
         }
     }
 
+}
+
+.popup-form {
+    display: none;
+    backdrop-filter: blur(10px);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    justify-content: center;
+
+    #report-problem-form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        height: fit-content;
+        background-color: #9db4c0;
+        margin: 10vh auto;
+
+        form {
+            font: inherit;
+            display: flex;
+            flex-direction: column;
+            margin: 2em;
+            font-size: 0.8em;
+
+            h4 {
+                margin: 0;
+            }
+
+            p {
+                margin: 0.5em 0;
+            }
+
+            textarea {
+                height: 10em;
+                width: 100%;
+                resize: none;
+            }
+
+            .button-container {
+                display: flex;
+                gap: 1em;
+                padding: 0;
+                margin: 1em 0 0 0;
+            }
+
+            button {
+                display: flex;
+                font: inherit;
+                justify-content: center;
+                width: 100px;
+                align-items: center;
+                padding: 0.2em;
+                font-size: 0.9em;
+                font-weight: 500;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .homepage {
+        .page-wrapper {
+            width: 90vw;
+
+            .homepage-text {
+                position: absolute;
+                width: 80%;
+                top: 50%;
+                transform: translateY(-50%);
+
+                h1 {
+                    font-size: 1em;
+                }
+
+                p {
+                    font-size: 0.5em;
+                }
+            }
+        }
+    }
 }
 
 

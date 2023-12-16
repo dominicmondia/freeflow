@@ -29,3 +29,12 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+
+class ProblemReport(models.Model):
+
+    problem_id = models.ForeignKey(Problem, on_delete=models.CASCADE)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.problem_id.title
+

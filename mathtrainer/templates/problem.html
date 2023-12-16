@@ -23,12 +23,30 @@
                     <p>Great Job!</p>
                 {% endif %}
             {% endfor %}
-            <a href="">Report Problem</a>
+            {% if not user.is_authenticated %}
+                <p>Sign in to save your progress!</p>
+            {% endif %}
+            <button type="button" id="report-problem-button" onclick="openForm()">Report Problem</button>
         </div>
 
         <span class="title" id="title" style="width: 70%; display: none">Solution</span>
         <div class="problem-solution" id="problem-solution" style="display: none">
             {{ problem.solution }}
+        </div>
+    </div>
+    <div class="popup-form" id="popup-form">
+        <div id="report-problem-form">
+            <form method="post">
+                {% csrf_token %}
+                <h4>Report a mistake in this question</h4>
+                <p>Thanks for your help!</p>
+                <label for="report-input">Describe the issue:</label>
+                <textarea id="report-input" name="description"></textarea>
+                <div class="button-container">
+                    <button id="submit-report-btn" type="submit" name="report_problem">Submit Issue</button>
+                    <button type="button" onclick="closeForm()">Cancel</button>
+                </div>
+            </form>
         </div>
 
     </div>
@@ -40,6 +58,15 @@
                 document.getElementById("problem-solution").style.display = "block";
             })
         }
+
+        function closeForm() {
+            document.getElementById("popup-form").style.display = "none";
+        }
+
+        function openForm() {
+            document.getElementById("popup-form").style.display = "flex";
+        }
+
     </script>
 
 {% endblock %}
