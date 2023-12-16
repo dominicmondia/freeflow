@@ -541,11 +541,11 @@ a, a:visited, a:hover, a:active {
                 transform: translateY(-50%);
 
                 h1 {
-                    font-size: 1em;
+                    font-size: 1.5em;
                 }
 
                 p {
-                    font-size: 0.5em;
+                    font-size: 0.75em;
                 }
             }
         }
