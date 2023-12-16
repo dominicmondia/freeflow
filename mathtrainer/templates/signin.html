@@ -1,34 +1,34 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="form-box">
-    <div class="form-container">
-        <div class="form-content">
-            <h3>Sign In</h3>
-            <form method="post" action="">
-                {% csrf_token %}
-                <p>
-                    <label>
-                        <input type="text" name="username" placeholder="Username">
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input type="password" name="password" placeholder="Password">
-                    </label>
-                </p>
+    <div class="form-box">
+        <div class="form-container">
+            <div class="form-content">
+                <h3>Sign In</h3>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <p>
+                        <label>
+                            <input type="text" name="username" placeholder="Username">
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input type="password" name="password" placeholder="Password">
+                        </label>
+                    </p>
 
-                <input type="submit" name="Sign In" value="Sign In" class="form-button">
-            </form>
-            {% for message in messages %}
-            <p style="width: fit-content; margin-right: auto; margin-left: auto;">{{ message }} </p>
-            {% endfor %}
-            <p style="width: fit-content; margin-right: auto; margin-left: auto; font-size: 0.8em" >
-                Don't have an account?
-                <a href="/signup" style="text-decoration: none; color: blue">Sign up</a>
-            </p>
+                    <input type="submit" name="Sign In" value="Sign In" class="form-button">
+                </form>
+                {% for message in messages %}
+                    <p style="width: fit-content; margin-right: auto; margin-left: auto;">{{ message }} </p>
+                {% endfor %}
+                <p style="width: fit-content; margin-right: auto; margin-left: auto; font-size: 0.8em">
+                    Don't have an account?
+                    <a href="/signup" style="text-decoration: none; color: blue">Sign up</a>
+                </p>
+            </div>
+
         </div>
-
     </div>
-</div>
 
 {% endblock %}

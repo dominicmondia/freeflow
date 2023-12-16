@@ -140,6 +140,12 @@ a, a:visited, a:hover, a:active {
             .form-button {
                 background-color: #C2DFE3;
             }
+
+            .errorlist{
+                list-style: none;
+                margin: auto auto 0;
+                padding: 0;
+            }
         }
     }
 }
@@ -179,7 +185,7 @@ a, a:visited, a:hover, a:active {
 
     .answer-input {
         display: block;
-        width: 15vw;
+        width: 12vw;
         min-width: 120px;
         font: inherit;
         border-radius: 10px;

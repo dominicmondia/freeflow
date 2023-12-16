@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Problem(models.Model):
@@ -19,4 +20,9 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    history = models.JSONField(default=dict)
 

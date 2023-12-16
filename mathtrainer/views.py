@@ -25,7 +25,6 @@ def signup(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Account successfully created!')
-
             return redirect('login')
 
     context = {'form': form}
