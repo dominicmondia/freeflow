@@ -38,10 +38,17 @@ header {
 
         .nav-link {
             display: flex;
+            align-items: center;
             align-self: center;
             text-decoration: none;
 
+            img{
+                display: flex;
+                width: 2.5em;
+                height: auto;
+            }
         }
+
 
         .nav-link:nth-child(2) {
             margin-right: auto;
