@@ -151,7 +151,8 @@ def problem(request, pk):
 
 def problem_set(request, problem_type):
     user = request.user
-    problems = Problem.objects.all() if problem_type == 'all' else Problem.objects.filter(type=problem_type)
+    problems = Problem.objects.all().order_by('id') if problem_type == 'all' else Problem.objects.filter(
+        type=problem_type).order_by('id')
 
     problem_filter = ProblemFilter(request.GET, queryset=problems)
     problems = problem_filter.qs
