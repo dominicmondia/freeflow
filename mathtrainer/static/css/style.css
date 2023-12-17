@@ -42,7 +42,7 @@ header {
             align-self: center;
             text-decoration: none;
 
-            img{
+            img {
                 display: flex;
                 width: 2.5em;
                 height: auto;
@@ -126,86 +126,93 @@ a, a:visited, a:hover, a:active {
         padding: 0 10px;
         margin: 2em auto;
 
-        .card-container {
-            width: 272px;
-            margin-left: auto;
-            margin-right: auto;
-            background-color: #F5F5F5;
-            border-radius: 10px;
-            overflow: hidden;
+        .team-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 2em;
 
-            .info--name {
-                font-size: 1em;
-                font-weight: 600;
-                color: black;
-                margin: auto;
-                padding-top: 1em;
-                padding-bottom: 0.5em;
-            }
+            .card-container {
+                width: 272px;
+                margin-left: auto;
+                margin-right: auto;
+                background-color: #F5F5F5;
+                border-radius: 10px;
+                overflow: hidden;
 
-            .info--title {
-                color: black;
-                margin: auto;
-                padding-bottom: 1em;
-                font-size: 0.8em;
-                font-weight: 400;
-            }
-
-            .info--button-container {
-                display: flex;
-                justify-content: center;
-                margin: auto;
-                gap: 1em;
-                padding: 0;
-            }
-
-            a {
-                text-decoration: none;
-            }
-
-            button {
-                display: flex;
-                font: inherit;
-                justify-content: center;
-                width: 100px;
-                align-items: center;
-                padding: 0.2em;
-                font-size: 0.9em;
-                font-weight: 500;
-                border-radius: 6px;
-            }
-
-            .info--linkedin-btn {
-                color: white;
-                background-color: #5093E2;
-                border: 1px solid #5093E2;
-            }
-
-            .info--email-btn {
-                border: 1px solid #D1D5DB;
-            }
-
-            .info--about {
-                width: 220px;
-                margin: auto;
-                text-align: left;
-                font-size: 1em;
-
-                h3 {
+                .info--name {
                     font-size: 1em;
-                    margin-bottom: 0;
+                    font-weight: 600;
+                    color: black;
+                    margin: auto;
+                    padding-top: 1em;
+                    padding-bottom: 0.5em;
                 }
 
-                p {
+                .info--title {
+                    color: black;
+                    margin: auto;
+                    padding-bottom: 1em;
                     font-size: 0.8em;
-                    margin-top: 0.5em;
+                    font-weight: 400;
                 }
+
+                .info--button-container {
+                    display: flex;
+                    justify-content: center;
+                    margin: auto;
+                    gap: 1em;
+                    padding: 0;
+                }
+
+                a {
+                    text-decoration: none;
+                }
+
+                button {
+                    display: flex;
+                    font: inherit;
+                    justify-content: center;
+                    width: 100px;
+                    align-items: center;
+                    padding: 0.2em;
+                    font-size: 0.9em;
+                    font-weight: 500;
+                    border-radius: 6px;
+                }
+
+                .info--linkedin-btn {
+                    color: white;
+                    background-color: #5093E2;
+                    border: 1px solid #5093E2;
+                }
+
+                .info--email-btn {
+                    border: 1px solid #D1D5DB;
+                }
+
+                .info--about {
+                    width: 220px;
+                    margin: auto;
+                    text-align: left;
+                    font-size: 1em;
+
+                    h3 {
+                        font-size: 1em;
+                        margin-bottom: 0;
+                    }
+
+                    p {
+                        font-size: 0.8em;
+                        margin-top: 0.5em;
+                    }
+                }
+
             }
-
         }
-    }
 
+    }
 }
+
 
 .form-box {
     width: 350px;
@@ -548,12 +555,24 @@ a, a:visited, a:hover, a:active {
                 transform: translateY(-50%);
 
                 h1 {
-                    font-size: 1.5em;
+                    font-size: 1.75em;
                 }
 
                 p {
-                    font-size: 0.75em;
+                    font-size: 0.875em;
                 }
+            }
+        }
+    }
+
+    .problem-solution {
+        font-size: 0.75em;
+    }
+
+    .about {
+        .page-wrapper {
+            .team-wrapper {
+                flex-direction: column;
             }
         }
     }

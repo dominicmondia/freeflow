@@ -12,36 +12,68 @@
                 More courses will be available on the upcoming updates.
             </p>
             <h1 style="text-align: center">TEAM</h1>
-            <div class="card-container" style="text-align: center">
-                <img src="{% static 'img/card_photo_1.png' %}" class="info--photo">
-                <h2 class="info--name">Dominic John Mondia</h2>
-                <h3 class="info--title">Founder</h3>
-                <div class="info--button-container">
-                    <button class="info--email-btn" title="Click to copy" value="dominic.john.mondia@eee.upd.edu.ph">
-                        <img src="{% static 'img/mail.svg' %}">
-                        Email
-                    </button>
-                    <a href="https://www.linkedin.com/in/dominic-john-mondia-598129209/" target="_blank">
-                        <button class="info--linkedin-btn">
-                            <img src="{% static 'img/linkedin_icon.svg' %}">
-                            LinkedIn
+            <div class="team-wrapper">
+                <div class="card-container" style="text-align: center">
+                    <img src="{% static 'img/card_photo_1.png' %}" class="info--photo">
+                    <h2 class="info--name">Dominic John Mondia</h2>
+                    <h3 class="info--title">Founder</h3>
+                    <div class="info--button-container">
+                        <button class="info--email-btn" title="Click to copy"
+                                value="dominic.john.mondia@eee.upd.edu.ph">
+                            <img src="{% static 'img/mail.svg' %}">
+                            Email
                         </button>
-                    </a>
+                        <a href="https://www.linkedin.com/in/dominic-john-mondia-598129209/" target="_blank">
+                            <button class="info--linkedin-btn">
+                                <img src="{% static 'img/linkedin_icon.svg' %}">
+                                LinkedIn
+                            </button>
+                        </a>
+                    </div>
+                    <div class="info--about">
+                        <h3>About</h3>
+                        <p class="info--text">Dom is a full stack developer who is passionate in building tools that can
+                            aid
+                            in providing universal
+                            access to quality education.</p>
+                    </div>
                 </div>
-                <div class="info--about">
-                    <h3>About</h3>
-                    <p class="info--text">Dom is a full stack developer who is passionate in building tools that can aid
-                        in providing universal
-                        access to quality education.</p>
+                <div class="card-container" style="text-align: center">
+                    <img src="{% static 'img/card_photo_2.png' %}" class="info--photo">
+                    <h2 class="info--name">Keziah Policarpio</h2>
+                    <h3 class="info--title">Software Engineer</h3>
+                    <div class="info--button-container">
+                        <button class="info--email-btn" title="Click to copy" value="policarpio.keziah30@gmail.com">
+                            <img src="{% static 'img/mail.svg' %}">
+                            Email
+                        </button>
+                        <a href="https://www.linkedin.com/in/keziah-policarpio-48171a285/" target="_blank">
+                            <button class="info--linkedin-btn">
+                                <img src="{% static 'img/linkedin_icon.svg' %}">
+                                LinkedIn
+                            </button>
+                        </a>
+                    </div>
+                    <div class="info--about">
+                        <h3>About</h3>
+                        <p class="info--text">Keziah is a results-driven and skilled Software Engineer dedicated to continuous
+                            learning and improvement.</p>
+                    </div>
                 </div>
             </div>
         </div>
+        <script>
+            elements = document.querySelectorAll(".info--email-btn")
+            console.log(elements)
+            let myFunction = function () {
+                navigator.clipboard.writeText(this.value)
+            };
+
+            Array.from(elements).forEach(function (element) {
+                element.addEventListener('click', myFunction, false);
+            });
+        </script>
     </div>
 
-    <script>
-        document.querySelector(".info--email-btn").addEventListener('click', ()=>{
-            navigator.clipboard.writeText(value);
-        })
-    </script>
 
 {% endblock %}
