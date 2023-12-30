@@ -129,8 +129,11 @@ def problem(request, pk):
 
     if request.method == 'POST':
         if 'user_answer' in request.POST:
-            user_answer = request.POST.get('user_answer')
-            correct_answer = item.answer
+            print('reached')
+            # user_answer = r"{}".format(request.POST.get('user_answer'))
+            # correct_answer = r"{}".format(item.answer)
+            user_answer = r"{}".format(request.POST.get('user_answer'))
+            correct_answer = r"{}".format(item.answer)
             if is_equal(user_answer, correct_answer):
                 messages.info(request, "correct")
                 status = 's'

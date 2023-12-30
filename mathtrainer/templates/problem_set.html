@@ -18,7 +18,7 @@
                href="/problems/intermediate-algebra">Intermediate Algebra</a>
         </div>
 
-        <form id="filter" method="get" action=""  autocomplete="off">
+        <form id="filter" method="get" action="" autocomplete="off">
             {{ filter.form }}
         </form>
 
@@ -34,8 +34,8 @@
                 <tr>
                     <td class="status-cell">
                         {% if item|get_status:user_history == 's' %}
-                        	<img src="{% static 'img/check.svg' %}" alt="check" title="solved">
-                        {% elif item|get_status:user_history == 'a'%}
+                            <img src="{% static 'img/check.svg' %}" alt="check" title="solved">
+                        {% elif item|get_status:user_history == 'a' %}
                             <img src="{% static 'img/minus.svg' %}" alt="minus" title="attempted">
                         {% endif %}
                     </td>
@@ -54,22 +54,20 @@
 
             {% page_limits problems.number 5 problems.paginator.num_pages as page_limits %}
             {% if page_limits.0|add:-5 > 0 %}
-                <li><a href="?page={{ page_limits.0|add:-5 }}">...</a></li>
+                <li>
+                    <a href="?{% query_transform page=page_limits.0|add:-5 %}">...</a>
+                </li>
             {% endif %}
             {% for page in page_limits %}
-                {% if 'page' in request.get_full_path %}
-                	<li class="{% if page == problems.number %}active{% endif %}"><a href="{{ request.get_full_path|slice:":-1" }}{{ page }}">{{ page }}</a>
-                {% elif '?' in request.get_full_path%}
-                    <li class="{% if page == problems.number %}active{% endif %}"><a href="{{ request.get_full_path }}&page={{ page }}">{{ page }}</a>
-                {% else %}
-                    <li class="{% if page == problems.number %}active{% endif %}"><a href="{{ request.get_full_path }}?page={{ page }}">{{ page }}</a>
-                {% endif %}
-
+                <li class="{% if page == problems.number %}active{% endif %}">
+                    <a href="?{% query_transform page=page %}">{{ page }}</a>
                 </li>
             {% endfor %}
 
             {% if page_limits.0|add:5 <= problems.paginator.num_pages %}
-                <li><a href="?page={{ page_limits.0|add:5 }}">...</a></li>
+                <li>
+                    <a href="?{% query_transform page=page_limits.0|add:5 %}">...</a>
+                </li>
             {% endif %}
 
             <li class="{% if not problems.has_next %}disabled{% endif %}"><a

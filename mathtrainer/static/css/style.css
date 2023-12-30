@@ -1,3 +1,74 @@
+@media screen and (max-width: 600px) {
+    main {
+        .homepage {
+            .page-wrapper {
+                width: 90vw;
+
+                .homepage-text {
+                    position: absolute;
+                    width: 80%;
+                    top: 50%;
+                    transform: translateY(-50%);
+
+                    h1 {
+                        font-size: 1.75em;
+                    }
+
+                    p {
+                        font-size: 0.875em;
+                    }
+                }
+            }
+        }
+
+        .problem-solution {
+            font-size: 0.75em;
+            width: 100%;
+        }
+
+        .problem-page {
+            .title{
+                width: 95%;
+            }
+
+            .problem-question {
+                width: 90%;
+
+                p {
+                    width: 100%;
+                }
+
+                .keypad {
+                    width: 100%;
+                    gap: 1%;
+
+                    ul{
+                        gap: 0.2em;
+                    }
+                }
+
+                .answer-input {
+                    width: 100%;
+                }
+
+            }
+
+            .problem-footer{
+                width: 90%;
+            }
+        }
+
+
+        .about {
+            .page-wrapper {
+                .team-wrapper {
+                    flex-direction: column;
+                }
+            }
+        }
+    }
+}
+
 * {
     box-sizing: border-box;
 }
@@ -284,6 +355,67 @@ a, a:visited, a:hover, a:active {
         width: 70%;
         margin: 2rem auto 0;
         border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+
+        p {
+            width: 85%;
+            margin: 0 auto;
+        }
+
+        .keypad {
+            display: flex;
+            width: 85%;
+            margin: 0 auto;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 1%;
+            justify-content: space-between;
+
+
+            ul {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                margin: 0 0 1em;
+                list-style: none;
+                padding: 0;
+                gap: 0.5em;
+
+                li {
+                    display: flex;
+                    font-variant-numeric: tabular-nums;
+                    border: solid 1px black;
+                    height: 2em;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    border-radius: 5px;
+                }
+            }
+
+            .numpad {
+                width: 40%;
+
+                li {
+                    width: 22%;
+                }
+            }
+
+            .symbols {
+                width: 30%;
+
+                li {
+                    width: 30%;
+                }
+            }
+
+            .intervals {
+                width: 20%;
+
+                li {
+                    width: 45%;
+                }
+            }
+        }
     }
 
     .problem-question > span {
@@ -293,12 +425,11 @@ a, a:visited, a:hover, a:active {
 
     .answer-input {
         display: block;
-        width: 12vw;
+        width: 85%;
         min-width: 120px;
-        font: inherit;
         border-radius: 10px;
         padding: 0.5em;
-        margin: 20px 0;
+        margin: 20px auto;
     }
 
     .problem-footer {
@@ -543,39 +674,5 @@ a, a:visited, a:hover, a:active {
     }
 }
 
-@media screen and (max-width: 600px) {
-    .homepage {
-        .page-wrapper {
-            width: 90vw;
-
-            .homepage-text {
-                position: absolute;
-                width: 80%;
-                top: 50%;
-                transform: translateY(-50%);
-
-                h1 {
-                    font-size: 1.75em;
-                }
-
-                p {
-                    font-size: 0.875em;
-                }
-            }
-        }
-    }
-
-    .problem-solution {
-        font-size: 0.75em;
-    }
-
-    .about {
-        .page-wrapper {
-            .team-wrapper {
-                flex-direction: column;
-            }
-        }
-    }
-}
 
 

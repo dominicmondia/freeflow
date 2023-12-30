@@ -4,13 +4,58 @@
     <div class="problem-page">
         <span class="title">{{ problem.title | titleize }}</span>
         <div class="problem-question">
-            {{ problem.problem }}
-            <form method="post">
+            <p>{{ problem.problem }}</p>
+            <form class="answer-form" id="answer-form" method="post" action="">
                 {% csrf_token %}
                 <label>
-                    <input class="answer-input" name="user_answer" autocomplete="off">
+                    <span class="answer-input" id="math-field"></span>
+                    <input type="hidden" name="user_answer" id="user_answer" value="">
                 </label>
             </form>
+            <div class="keypad">
+                <ul class="numpad">
+                    <li class="numpad-item" value="1">1</li>
+                    <li class="numpad-item" value="2">2</li>
+                    <li class="numpad-item" value="3">3</li>
+                    <li class="numpad-item" value="+">+</li>
+                    <li class="numpad-item" value="4">4</li>
+                    <li class="numpad-item" value="5">5</li>
+                    <li class="numpad-item" value="6">6</li>
+                    <li class="numpad-item" value="-">-</li>
+                    <li class="numpad-item" value="7">7</li>
+                    <li class="numpad-item" value="8">8</li>
+                    <li class="numpad-item" value="9">9</li>
+                    <li class="numpad-item" value="/">$\frac{a}{b}$</li>
+                    <li class="numpad-item" value=".">.</li>
+                    <li class="numpad-item" value="0">0</li>
+                    <li class="numpad-item" value="=">=</li>
+                    <li class="numpad-item" value="%">%</li>
+                </ul>
+                <ul class="symbols">
+                    <li class="numpad-item" value="^">$a^n$</li>
+                    <li class="numpad-item" value="\degree">$a^{\circ}$</li>
+                    <li class="numpad-item" value="_">$a_n$</li>
+                    <li class="numpad-item" value="\sqrt">$\sqrt{}$</li>
+                    <li class="numpad-item" value="\nthroot">$\sqrt[n]{}$</li>
+                    <li class="numpad-item" value="\pi">$\pi$</li>
+                    <li class="numpad-item" value="\ln">$\ln{}$</li>
+                    <li class="numpad-item" value="\log">$\log$</li>
+                    <li class="numpad-item" value="\theta">$\theta$</li>
+                    <li class="numpad-item" value="\sin">$\sin{}$</li>
+                    <li class="numpad-item" value="\cos">$\cos{}$</li>
+                    <li class="numpad-item" value="\tan">$\tan{}$</li>
+                </ul>
+                <ul class="intervals">
+                    <li class="numpad-item" value="(">$($</li>
+                    <li class="numpad-item" value=")">$)$</li>
+                    <li class="numpad-item" value="[">$[$</li>
+                    <li class="numpad-item" value="]">$]$</li>
+                    <li class="numpad-item" value="\cap">$\cap$</li>
+                    <li class="numpad-item" value="\cup">$\cup$</li>
+                    <li class="numpad-item" value=",">$,$</li>
+                    <li class="numpad-item" value="\infty">$\infty$</li>
+                </ul>
+            </div>
         </div>
 
         <div class="problem-footer">
@@ -66,6 +111,43 @@
         function openForm() {
             document.getElementById("popup-form").style.display = "flex";
         }
+
+    </script>
+    <script>
+        const mathFieldSpan = document.getElementById('math-field');
+        const userAnswer = document.getElementById('user_answer')
+        const userAnswerForm = document.getElementById('answer-form')
+        const numpad = document.getElementsByClassName('numpad-item')
+
+        const MQ = MathQuill.getInterface(2);
+        const mathField = MQ.MathField(mathFieldSpan, {
+            spaceBehavesLikeTab: true,
+            handlers: {
+                edit: function () { // useful event handlers
+                    userAnswer.value = mathField.latex();
+                }
+            }
+        });
+
+        mathFieldSpan.addEventListener("keypress",
+            function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    userAnswerForm.submit()
+                }
+            })
+
+        Array.from(numpad).forEach(function (el) {
+                el.addEventListener(
+                    "mousedown",
+                    (event) => {
+                        event.preventDefault()
+                        mathField.cmd(el.getAttribute("value"))
+                        mathField.focus()
+                    }
+                )
+        })
+
 
     </script>
 
