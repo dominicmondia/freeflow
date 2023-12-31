@@ -8,7 +8,9 @@ from .forms import RegistrationForm
 from .models import Problem, UserProfile, ProblemReport
 
 import sympy as sp
+from sympy import sympify
 from sympy.parsing.latex import parse_latex
+import re
 import pint
 
 
@@ -60,76 +62,47 @@ def problem(request, pk):
     item = Problem.objects.get(title=pk)
     user = request.user
 
+    def simplify(expr):
+        special_chars = ["%", "_"]  # symbols unsupported by sympy.parsing.latex.parse_latex
+        affixes = [r"\left(", r"\left[", r"\right)", r"\right]", ","]
+        affixes_non_latex = ["(", ")", "[", "]"]
+
+        # if any(affix in expr for affix in affixes):
+        if "," in expr:
+            """ 
+            handles ordered pair, multiple expressions separated by a comma, and intervals
+            """
+
+            expr_list = [item.replace(" ", "").replace(r"//", r"/") for item in
+                         re.split(r"(\\left\(|\\left\[|\\right\)|\\right]|,)", expr) if
+                         item not in ["", ","]]
+
+            print(expr_list)
+
+            expr_list = [item if any(char in special_chars for char in item)
+                         else item[-1] if item in affixes
+                         else sympify(parse_latex(item))
+                         for item in expr_list]
+
+            if any(item in expr_list for item in affixes_non_latex):
+                return expr_list
+            else:
+                return sorted(expr_list)
+
+        if any(char in expr for char in special_chars):
+            return expr
+
+        return sympify(parse_latex(expr))
+
     def is_equal(expr1, expr2):
-        def latex_parser(expr):
-            expr = expr.lower()
-            wrappers = ['(', ')', '[', ']']
-            if ',' in expr and not any(wrapper in expr for wrapper in wrappers):
-                expr_list = expr.split(',')
-                updated_expr_list = []
-                for term in expr_list:
-                    term = str(latex_parser(term))
-                    updated_expr_list.append(term)
-                expr = ','.join(updated_expr_list)
-                return expr
+        expr1, expr2 = simplify(expr1), simplify(expr2)
+        if type(expr1) is not type(expr2):
+            return False
 
-            elif '\cup' in expr:
-                expr_list = expr.split('\cup')
-                updated_expr_list = []
-                for term in expr_list:
-                    term = str(latex_parser(term))
-                    updated_expr_list.append(term)
-                expr = '\cup'.join(updated_expr_list)
-
-            elif ',' in expr:
-                affix = [expr[0], expr[-1]]
-                expr = expr[1:len(expr) - 1]
-                expr = str(latex_parser(expr))
-                expr = affix[0] + expr + affix[1]
-                return expr
-
-            try:
-                return parse_latex(expr)
-            except sp.parsing.latex.errors.LaTeXParsingError:
-                return expr
-
-        def evaluate_expression(expr):
-            units_reg = pint.get_application_registry()
-            try:
-                units_expr = units_reg.parse_expression(expr)
-                return units_expr.magnitude, units_expr.units
-
-            except AttributeError:
-                expr = expr.split(r'\text{')
-                magnitude = latex_parser(expr[0])
-                expr = expr[-1][:-1] if len(expr) > 1 else expr[0]
-
-                try:
-                    units = units_reg.parse_units(expr)
-                except pint.errors.UndefinedUnitError:
-                    units = None
-                except ValueError:
-                    units = None
-                except TypeError:
-                    units = None
-
-                return magnitude, units
-
-            except:
-                return 0, None
-
-        mag1, units1 = evaluate_expression(expr1)
-        mag2, units2 = evaluate_expression(expr2)
-
-        if type(mag1) == str or type(mag2) == str:
-            return mag1.replace(' ', '').lower() == mag2.replace(' ', '').lower() and units1 == units2
-        else:
-            # print(mag1, units1, mag2, units2)
-            return sp.simplify(mag1 - mag2) == 0 and units1 == units2
+        return str(expr1).replace(" ", "") == str(expr2).replace(" ", "")
 
     if request.method == 'POST':
         if 'user_answer' in request.POST:
-            print('reached')
             # user_answer = r"{}".format(request.POST.get('user_answer'))
             # correct_answer = r"{}".format(item.answer)
             user_answer = r"{}".format(request.POST.get('user_answer'))
