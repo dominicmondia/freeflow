@@ -27,7 +27,7 @@
         }
 
         .problem-page {
-            .title{
+            .title {
                 width: 95%;
             }
 
@@ -42,7 +42,7 @@
                     width: 100%;
                     gap: 1%;
 
-                    ul{
+                    ul {
                         gap: 0.2em;
                     }
                 }
@@ -53,7 +53,7 @@
 
             }
 
-            .problem-footer{
+            .problem-footer {
                 width: 90%;
             }
         }
@@ -333,7 +333,7 @@ a, a:visited, a:hover, a:active {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
-    margin: 10vh auto;
+    margin: 10vh auto 2vh;
     width: 100%;
     max-width: 1000px;
     height: fit-content;
@@ -437,14 +437,10 @@ a, a:visited, a:hover, a:active {
         flex-wrap: wrap;
         flex-direction: row;
         width: 70%;
-        margin: 0.5em auto 2em;
+        margin: 0.5em auto;
         align-content: center;
-        gap: 0 1em;
+        justify-content: space-between;
         font-size: 13px;
-
-        * {
-            min-width: 150px;
-        }
 
         p {
             display: inline-flex;
@@ -464,12 +460,47 @@ a, a:visited, a:hover, a:active {
             text-decoration: underline;
         }
 
-        a {
+    }
+
+    .problem-navigation {
+        display: flex;
+        justify-content: center;
+        margin: auto;
+        gap: 0;
+        list-style: none;
+        min-width: 0;
+        padding: 0;
+
+        li {
             display: inline-flex;
             width: fit-content;
-            align-self: center;
-            color: grey;
-            font-size: small;
+            white-space: nowrap;
+            color: #5C6B73;
+            cursor: pointer;
+
+
+            a {
+                padding: 0.4em 0.8em;
+                font-size: small;
+            }
+        }
+
+        #prev {
+            border-radius: 12px 0 0 12px;
+        }
+
+        #next {
+            border-radius: 0 12px 12px 0;
+        }
+
+        li.active {
+            color: white;
+            background-color: #C2DFE3;
+        }
+
+        li.disabled {
+            pointer-events: none;
+            opacity: 0.3;
         }
     }
 

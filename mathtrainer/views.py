@@ -7,11 +7,9 @@ from .filters import ProblemFilter
 from .forms import RegistrationForm
 from .models import Problem, UserProfile, ProblemReport
 
-import sympy as sp
 from sympy import sympify
 from sympy.parsing.latex import parse_latex
 import re
-import pint
 
 
 # Create your views here.
@@ -61,6 +59,20 @@ def signout(request):
 def problem(request, pk):
     item = Problem.objects.get(title=pk)
     user = request.user
+    try:
+        titles = request.session["problem_titles"]
+    except KeyError:
+        titles = request.session["problem_titles"] = [str(title) for title in Problem.objects.all().order_by('id')]
+
+    try:
+        prev_problem_title = titles[titles.index(item.title) - 1] if titles.index(item.title) > 0 else None
+        next_problem_title = titles[titles.index(item.title) + 1] if titles.index(item.title) < len(
+            titles) - 1 else None
+    except ValueError:
+        titles = request.session["problem_titles"] = [str(title) for title in Problem.objects.all().order_by('id')]
+        prev_problem_title = titles[titles.index(item.title) - 1] if titles.index(item.title) > 0 else None
+        next_problem_title = titles[titles.index(item.title) + 1] if titles.index(item.title) < len(
+            titles) - 1 else None
 
     def simplify(expr):
         special_chars = ["%", "_"]  # symbols unsupported by sympy.parsing.latex.parse_latex
@@ -77,11 +89,9 @@ def problem(request, pk):
                          re.split(r"(\\left\(|\\left\[|\\right\)|\\right]|,)", expr) if
                          item not in ["", ","]]
 
-            print(expr_list)
-
             expr_list = [item if any(char in special_chars for char in item)
                          else item[-1] if item in affixes
-                         else sympify(parse_latex(item))
+            else sympify(parse_latex(item))
                          for item in expr_list]
 
             if any(item in expr_list for item in affixes_non_latex):
@@ -103,8 +113,6 @@ def problem(request, pk):
 
     if request.method == 'POST':
         if 'user_answer' in request.POST:
-            # user_answer = r"{}".format(request.POST.get('user_answer'))
-            # correct_answer = r"{}".format(item.answer)
             user_answer = r"{}".format(request.POST.get('user_answer'))
             correct_answer = r"{}".format(item.answer)
             if is_equal(user_answer, correct_answer):
@@ -122,7 +130,9 @@ def problem(request, pk):
         else:
             report = ProblemReport(problem_id=item, description=request.POST.get('description'))
             report.save()
-    return render(request, 'problem.html', {'problem': item})
+    return render(request, 'problem.html', {'problem': item,
+                                           'next_problem_title': next_problem_title,
+                                            'prev_problem_title': prev_problem_title})
 
 
 def problem_set(request, problem_type):
@@ -132,6 +142,7 @@ def problem_set(request, problem_type):
 
     problem_filter = ProblemFilter(request.GET, queryset=problems)
     problems = problem_filter.qs
+    request.session["problem_titles"] = [str(title[0]) for title in problems.values_list('title')]
     problem_set_paginator = Paginator(problems, 20)
     page = request.GET.get('page')
 

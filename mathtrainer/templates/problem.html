@@ -74,6 +74,15 @@
             <button type="button" id="report-problem-button" onclick="openForm()">Report Problem</button>
         </div>
 
+        <ul class="problem-navigation">
+            <li class="{% if not prev_problem_title %}disabled{% endif %}" id="prev">
+                <a href="/problem/{{ prev_problem_title }}">Prev</a>
+            </li>
+            <li class="{% if not next_problem_title %}disabled{% endif %}" id="next">
+                <a href="/problem/{{ next_problem_title }}">Next</a>
+            </li>
+        </ul>
+
         <span class="title" id="title" style="width: 70%; display: none">Solution</span>
         <div class="problem-solution" id="problem-solution" style="display: none">
             {{ problem.solution }}
@@ -139,14 +148,14 @@
             })
 
         Array.from(numpad).forEach(function (el) {
-                el.addEventListener(
-                    "mousedown",
-                    (event) => {
-                        event.preventDefault()
-                        mathField.cmd(el.getAttribute("value"))
-                        mathField.focus()
-                    }
-                )
+            el.addEventListener(
+                "mousedown",
+                (event) => {
+                    event.preventDefault()
+                    mathField.cmd(el.getAttribute("value"))
+                    mathField.focus()
+                }
+            )
         })
 
 

@@ -43,3 +43,8 @@ def query_transform(context, **kwargs):
     for k, v in kwargs.items():
         query[k] = v
     return query.urlencode()
+
+
+@register.simple_tag(takes_context=True)
+def take_query(context, **kwargs):
+    return context['request'].GET.copy()
