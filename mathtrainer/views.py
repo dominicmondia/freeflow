@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 from .filters import ProblemFilter
-
-from .forms import RegistrationForm
+from .forms import RegistrationForm, PasswordChangeForm
 from .models import Problem, UserProfile, ProblemReport
 
 from sympy import sympify
@@ -123,7 +123,7 @@ def problem(request, pk):
                 status = 'a'
             if user.is_authenticated:
                 user_profile = UserProfile.objects.get(user=user)
-                user_profile.history[item.id] = status
+                user_profile.history[item.title] = status
                 user_profile.save()
             messages.info(request, "attempted")
             return redirect(f'/problem/{pk}')
@@ -131,7 +131,7 @@ def problem(request, pk):
             report = ProblemReport(problem_id=item, description=request.POST.get('description'))
             report.save()
     return render(request, 'problem.html', {'problem': item,
-                                           'next_problem_title': next_problem_title,
+                                            'next_problem_title': next_problem_title,
                                             'prev_problem_title': prev_problem_title})
 
 
@@ -158,3 +158,68 @@ def problem_set(request, problem_type):
                   'problem_set.html',
                   {'problems': problems, 'problem_type': problem_type, 'filter': problem_filter,
                    'user_history': user_history})
+
+
+def profile(request, username):
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return redirect('home')
+    user_profile = UserProfile.objects.get(user=user)
+    topics = Problem.objects.values_list('type', flat=True).distinct()
+    user_statistics = {}
+
+    for topic in topics:
+        solved_problems = len([Problem.objects.get(id=problem_id) for problem_id in user_profile.history.keys() if
+                               Problem.objects.get(id=problem_id).type == topic and user_profile.history[
+                                   problem_id] == 's'])
+        total_number_problems = Problem.objects.filter(type=topic).count()
+        user_statistics[topic] = {'solved_problems': solved_problems,
+                                  'total_number_problems': total_number_problems}
+    total = {
+        "num_solved_problems": list(user_profile.history.values()).count('s'),
+        "num_problems": Problem.objects.all().count()
+    }
+
+    return render(request, 'profile.html',
+                  {'user_profile': user_profile, 'user_statistics': user_statistics, 'total': total})
+
+
+def change_username(request):
+    if request.user.is_authenticated:
+        username = request.user.username
+        if request.method == 'POST':
+            new_username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+
+            if User.objects.all().filter(username=new_username).exists():
+                messages.info(request, f'Username: {new_username} is already in use.')
+                return render(request, 'change_username.html')
+
+            if user is not None:
+                user.username = new_username
+                user.save()
+                messages.info(request, 'Username updated successfully.')
+                return redirect('change_username')
+            else:
+                messages.info(request, 'Incorrect password')
+
+        return render(request, 'change_username.html')
+
+    else:
+        return redirect('home')
+
+
+def change_password(request):
+    form = PasswordChangeForm(request.user, request.POST)
+
+    if request.method == 'POST':
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated.')
+            return redirect('change_password')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'change_password.html', {'form': form})

@@ -13,8 +13,8 @@ class Problem(models.Model):
     title = models.TextField(primary_key=True)
     id = models.IntegerField()
     problem = models.TextField()
-    level = models.TextField()
-    type = models.TextField(choices=LevelChoices.choices)
+    level = models.TextField(choices=LevelChoices.choices)
+    type = models.TextField()
     solution = models.TextField()
     answer = models.TextField()
 
@@ -24,7 +24,7 @@ class Problem(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    history = models.JSONField(default=dict)
+    history = models.JSONField(default=dict, blank=True)
 
     def __str__(self):
         return self.user.username

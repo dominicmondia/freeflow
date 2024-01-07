@@ -30,9 +30,27 @@ def stringyfy(var):
 
 
 @register.filter
+def progress_value(value, arg):
+    try:
+        return 0.01 if 0 < int(value) / int(arg) < 0.01 else int(value) / int(arg)
+    except (ValueError, ZeroDivisionError):
+        return None
+
+
+@register.filter
+def dash_length(solved, total):
+    return 282 * solved / total
+
+
+@register.filter
+def progress_length(solved, total):
+    return solved/total * 100 if solved/total > 0.01 else 1
+
+
+@register.filter
 def get_status(item, user_history):
-    if str(item.id) in user_history.keys():
-        return user_history[str(item.id)]
+    if str(item.title) in user_history.keys():
+        return user_history[str(item.title)]
     else:
         return ''
 

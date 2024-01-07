@@ -1,0 +1,28 @@
+{% extends 'profile.html' %}
+{% block profile_content %}
+    <div class="profile-header-wrapper">
+        <div class="profile-header">
+            <h2>
+                Update Username
+            </h2>
+        </div>
+    </div>
+    <div class="form-content" id="form-content" style="display: flex ;width: 80%; margin: 2em auto">
+        <form method="post" action="">
+            {% csrf_token %}
+            <p>
+                <label for="username">New Username:</label>
+                <input type="text" name="username" id="username" placeholder="Username" style="font-size: 0.8em">
+            </p>
+            <p>
+                <label for="password">Password:</label>
+                <input type="password" name="password" id="password" placeholder="Password" style="font-size: 0.8em">
+            </p>
+            <input type="submit" value="Submit" class="form-button" style="font-size: 0.8em">
+        </form>
+    </div>
+    {% for message in messages %}
+        <p style="font-size: 0.8em; margin: 0 auto">{{ message }}</p>
+    {% endfor %}
+
+{% endblock %}

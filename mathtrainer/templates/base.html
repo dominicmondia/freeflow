@@ -17,7 +17,7 @@
     <link rel="icon" type="image/x-icon" href="{% static 'img/logo.png' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,700;1,700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;0,600;0,700;1,700&display=swap"
           rel="stylesheet">
     <script>
         MathJax = {
@@ -45,20 +45,62 @@
 <header>
 
     <div class='nav-container'>
+        <li class="nav-link">
+            <a class='nav-link' id="logo" href={% url 'home' %}>
+                <img src="{% static 'img/logo.png' %}">
+                Freeflows
+            </a>
+        </li>
+        <li class="nav-link">
+            <a class='nav-link' id="logo" href='/problems/all'>Problems</a>
+        </li>
 
-        <a class='nav-link' id="logo" href={% url 'home' %}>
-            <img src="{% static 'img/logo.png' %}">
-            Freeflows
-        </a>
-        <a class='nav-link' id="logo" href='/problems/all'>Problems</a>
         {% if user.is_authenticated %}
-            <a class="nav-link" href="{% url 'logout' %}">Sign out</a>
+
+            <li class="dropdown">
+                <span class="nav-link" id="profile-dropdown-btn">
+                    {{ request.user.username }}
+                    <i class="arrow" id="profile-dropdown-arrow"></i>
+                </span>
+                <div class="dropdown-content" id="profile-dropdown-content">
+                    <a class="nav-link" href="/user/{{ request.user.username }}">Profile</a>
+                    <a class="nav-link" href="{% url 'change_username' %}">Update Username</a>
+                    <a class="nav-link" href="{% url 'change_password' %}">Update Password</a>
+                    <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
+                </div>
+            </li>
 
         {% else %}
             <a class='nav-link' href={% url 'login' %}>Sign in</a>
         {% endif %}
 
     </div>
+    <script>
+        const dropdown_btn = document.getElementById("profile-dropdown-btn")
+        const dropdown_arrow = document.getElementById("profile-dropdown-arrow")
+        const dropdown_content = document.getElementById("profile-dropdown-content")
+
+        dropdown_btn.addEventListener('click', () => {
+            if (dropdown_content.style.display === '' || dropdown_content.style.display === 'none' ) {
+                dropdown_arrow.style.transform = "rotate(45deg)"
+                dropdown_arrow.style.margin = "0.2em 0 0 0.2em"
+                dropdown_content.style.display = "inline-block"
+                dropdown_btn.style.borderTop = "3px solid transparent"
+                dropdown_btn.style.borderBottom = "3px solid #C2DFE3"
+                dropdown_content.display = "inline-block"
+            }
+            else{
+                dropdown_arrow.style.transform = "rotate(225deg)"
+                dropdown_arrow.style.margin = "0 0 0.1em 0.2em"
+                dropdown_content.style.display = "none"
+                dropdown_btn.style.borderTop = "3px solid transparent"
+                dropdown_btn.style.borderBottom = "3px solid transparent"
+                dropdown_content.display = "inline-block"
+            }
+            console.log(dropdown_content.style.display)
+        })
+
+    </script>
 </header>
 <main>
     {% block content %} {% endblock %}
