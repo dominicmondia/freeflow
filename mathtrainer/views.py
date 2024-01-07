@@ -170,9 +170,9 @@ def profile(request, username):
     user_statistics = {}
 
     for topic in topics:
-        solved_problems = len([Problem.objects.get(id=problem_id) for problem_id in user_profile.history.keys() if
-                               Problem.objects.get(id=problem_id).type == topic and user_profile.history[
-                                   problem_id] == 's'])
+        solved_problems = len([Problem.objects.get(title=problem_title) for problem_title in user_profile.history.keys() if
+                               Problem.objects.get(title=problem_title).type == topic and user_profile.history[
+                                   problem_title] == 's'])
         total_number_problems = Problem.objects.filter(type=topic).count()
         user_statistics[topic] = {'solved_problems': solved_problems,
                                   'total_number_problems': total_number_problems}
