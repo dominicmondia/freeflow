@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
     <div class="about">
-        <div class="page-wrapper">
+        <div class="about-page-wrapper">
             <h1 style="text-align: center">ABOUT</h1>
             <p>
                 Freeflows is a series of web applications which aims to provide problem solving training resources
@@ -23,10 +23,10 @@
                             <img src="{% static 'img/mail.svg' %}">
                             Email
                         </button>
-                        <a href="https://www.linkedin.com/in/dominic-john-mondia-598129209/" target="_blank">
-                            <button class="info--linkedin-btn">
+                            <button class="info--linkedin-btn" value="https://www.linkedin.com/in/dominic-john-mondia-598129209/">
                                 <img src="{% static 'img/linkedin_icon.svg' %}">
                                 LinkedIn
+{#                                <a href="https://www.linkedin.com/in/dominic-john-mondia-598129209/" target="_blank">#}
                             </button>
                         </a>
                     </div>
@@ -47,10 +47,10 @@
                             <img src="{% static 'img/mail.svg' %}">
                             Email
                         </button>
-                        <a href="https://www.linkedin.com/in/keziah-policarpio-48171a285/" target="_blank">
                             <button class="info--linkedin-btn">
                                 <img src="{% static 'img/linkedin_icon.svg' %}">
                                 LinkedIn
+{#                                <a href="https://www.linkedin.com/in/keziah-policarpio-48171a285/" target="_blank">#}
                             </button>
                         </a>
                     </div>
@@ -63,14 +63,20 @@
             </div>
         </div>
         <script>
-            elements = document.querySelectorAll(".info--email-btn")
-            console.log(elements)
-            let myFunction = function () {
+            mailElements = document.querySelectorAll(".info--email-btn")
+            linkedinElements = document.querySelectorAll(".info--linkedin-btn")
+            let copyEmail = function () {
                 navigator.clipboard.writeText(this.value)
             };
 
-            Array.from(elements).forEach(function (element) {
-                element.addEventListener('click', myFunction, false);
+            Array.from(mailElements).forEach(function (element) {
+                element.addEventListener('click', copyEmail, false);
+            });
+
+            Array.from(linkedinElements).forEach(function (element) {
+                element.onclick = () => {
+                    window.open(element.value)
+                }
             });
         </script>
     </div>

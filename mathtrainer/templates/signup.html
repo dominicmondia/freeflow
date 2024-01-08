@@ -6,9 +6,18 @@
                 <h3>Sign Up</h3>
                 <form method="post" action="">
                     {% csrf_token %}
-                    <p>{{ form.username }}</p>
-                    <p>{{ form.password1 }}</p>
-                    <p>{{ form.password2 }}</p>
+                    <p>
+                        <label>{{ form.username }}</label>
+
+                    </p>
+                    <p>
+                        <label>{{ form.password1 }}</label>
+
+                    </p>
+                    <p>
+                        <label>{{ form.password2 }}</label>
+
+                    </p>
                     <input type="submit" name="Create User" value="Sign Up" class="form-button">
                 </form>
                 <p style="width: fit-content; margin-right: auto; margin-left: auto; font-size: 0.8em">

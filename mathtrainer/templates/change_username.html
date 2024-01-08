@@ -11,14 +11,19 @@
         <form method="post" action="">
             {% csrf_token %}
             <p>
-                <label for="username">New Username:</label>
-                <input type="text" name="username" id="username" placeholder="Username" style="font-size: 0.8em">
+                <label for="username">
+                    New Username:
+                    <input type="text" name="username" id="username" placeholder="Username">
+                </label>
+
             </p>
             <p>
-                <label for="password">Password:</label>
-                <input type="password" name="password" id="password" placeholder="Password" style="font-size: 0.8em">
+                <label for="password">
+                    Password:
+                    <input type="password" name="password" id="password" placeholder="Password">
+                </label>
             </p>
-            <input type="submit" value="Submit" class="form-button" style="font-size: 0.8em">
+            <input type="submit" value="Submit" class="form-button">
         </form>
     </div>
     {% for message in messages %}

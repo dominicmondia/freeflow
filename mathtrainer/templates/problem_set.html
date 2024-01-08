@@ -39,8 +39,8 @@
                             <img src="{% static 'img/minus.svg' %}" alt="minus" title="attempted">
                         {% endif %}
                     </td>
-                    <td class="title-cell"><a
-                            href="/problem/{{ item.title }}">{{ item.id }}. {{ item.title | titleize }}</a></td>
+                    <td class="title-cell">
+                        <a href="/problem/{{ item.title }}">{{ item.id }}. {{ item.title | titleize }}</a></td>
                     <td class="difficulty-cell"> {{ item.level }}</td>
                 </tr>
             {% endfor %}
@@ -48,7 +48,7 @@
         <ul class="page-nav-container">
 
 
-            <li class="{% if not problems.has_previous %}disabled{% endif %}" ><a
+            <li class="{% if not problems.has_previous %}disabled{% endif %}"><a
                     href="?page={% if problems.has_previous %}{{ problems.previous_page_number }}{% endif %}">Prev</a>
             </li>
 

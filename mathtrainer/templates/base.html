@@ -19,22 +19,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,500;0,600;0,700;1,700&display=swap"
           rel="stylesheet">
-    <script>
-        MathJax = {
-            tex: {
-                inlineMath: [
-                    ["$", "$"],
-                    ["\\(", "\\)"],
-                ],
-                displayMath: [
-                    ["$$", "$$"],
-                    ["\\[", "\\]"]
-                ]
-            }
+    <script type="text/x-mathjax-config">
+
+        MathJax.Hub.Config({
+        tex2jax: { inlineMath: [["$","$"],["\\(","\\)"]] },
+        "HTML-CSS": {
+          linebreaks: { automatic: true, width: "container" }
         }
+        });
+
     </script>
-    <script type="text/javascript" id="MathJax-script" async
-            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
     <link rel="stylesheet" href="{% static 'css/mathquill.css' %}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -45,14 +41,14 @@
 <header>
 
     <div class='nav-container'>
-        <li class="nav-link">
-            <a class='nav-link' id="logo" href={% url 'home' %}>
-                <img src="{% static 'img/logo.svg' %}">
+        <li class="nav-item">
+            <a class='nav-link' href={% url 'home' %}>
+                <img id="logo" src="{% static 'img/logo.svg' %}">
                 Freeflows
             </a>
         </li>
-        <li class="nav-link">
-            <a class='nav-link' id="logo" href='/problems/all'>Problems</a>
+        <li class="nav-item">
+            <a class='nav-link' href='/problems/all'>Problems</a>
         </li>
 
         {% if user.is_authenticated %}
@@ -81,15 +77,14 @@
         const dropdown_content = document.getElementById("profile-dropdown-content")
 
         dropdown_btn.addEventListener('click', () => {
-            if (dropdown_content.style.display === '' || dropdown_content.style.display === 'none' ) {
+            if (dropdown_content.style.display === '' || dropdown_content.style.display === 'none') {
                 dropdown_arrow.style.transform = "rotate(45deg)"
                 dropdown_arrow.style.margin = "0.2em 0 0 0.2em"
                 dropdown_content.style.display = "inline-block"
                 dropdown_btn.style.borderTop = "3px solid transparent"
                 dropdown_btn.style.borderBottom = "3px solid #C2DFE3"
                 dropdown_content.display = "inline-block"
-            }
-            else{
+            } else {
                 dropdown_arrow.style.transform = "rotate(225deg)"
                 dropdown_arrow.style.margin = "0 0 0.1em 0.2em"
                 dropdown_content.style.display = "none"
@@ -97,7 +92,6 @@
                 dropdown_btn.style.borderBottom = "3px solid transparent"
                 dropdown_content.display = "inline-block"
             }
-            console.log(dropdown_content.style.display)
         })
 
     </script>
