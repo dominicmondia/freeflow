@@ -8,6 +8,7 @@ from .forms import RegistrationForm, PasswordChangeForm
 from .models import Problem, UserProfile, ProblemReport
 
 from sympy import sympify
+import sympy
 from sympy.parsing.latex import parse_latex
 import re
 
@@ -91,7 +92,7 @@ def problem(request, pk):
 
             expr_list = [item if any(char in special_chars for char in item)
                          else item[-1] if item in affixes
-            else sympify(parse_latex(item))
+            else simplify(item)
                          for item in expr_list]
 
             if any(item in expr_list for item in affixes_non_latex):
@@ -101,8 +102,10 @@ def problem(request, pk):
 
         if any(char in expr for char in special_chars):
             return expr
-
-        return sympify(parse_latex(expr))
+        try:
+            return sympify(parse_latex(expr))
+        except sympy.parsing.latex.errors.LaTeXParsingError or ValueError or SyntaxError:
+            return expr
 
     def is_equal(expr1, expr2):
         expr1, expr2 = simplify(expr1), simplify(expr2)
