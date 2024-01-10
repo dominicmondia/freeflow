@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load custom_filters %}
+{% load static %}
 {% block content %}
     <div class="problem-page">
         <span class="title">{{ problem.title | titleize }}</span>
@@ -63,9 +64,23 @@
                 {% if message|stringyfy == "attempted" %}
                     <button class="show-solution-btn" id="show-solution-btn">Show Solution</button>
                 {% elif message|stringyfy == "incorrect" %}
-                    <p>Not quite, Try again!</p>
+                    <!-- <p>Not quite, Try again!</p> -->
+                    <!-- <button class="show-popup-btn" onclick="showPopup('Not quite, Try again!')">Try again</button> -->
+                    <script>
+                        // Show incorrect popup immediately on page load
+                        document.addEventListener('DOMContentLoaded', function() {
+                            showPopup('Not quite!','Try Again', '{% static "img/try-again.png" %}');
+                        });
+                    </script>
                 {% else %}
-                    <p>Great Job!</p>
+                    <!-- <p>Great Job!</p> -->
+                    <!-- <button class="show-popup-btn" onclick="showPopup('Good Job!')">Great Job</button> -->
+                    <script>
+                        // Show "Great Job!" popup immediately on page load
+                        document.addEventListener('DOMContentLoaded', function() {
+                            showPopup('Correct','Great Job!','{% static "img/great-job.png" %}');
+                        });
+                    </script>
                 {% endif %}
             {% endfor %}
             {% if not user.is_authenticated %}
@@ -104,6 +119,7 @@
         </div>
 
     </div>
+    
     <script>
         const el = document.getElementById("show-solution-btn");
         if (el) {
@@ -121,6 +137,17 @@
             document.getElementById("popup-form").style.display = "flex";
         }
 
+        function showPopup(message1, message2, imageSource) {
+        var popup = document.createElement("div");
+        popup.className = "popup";
+        popup.innerHTML = "<img class='popup-image' src='" + imageSource + "' alt='Popup Image'>" + "<h4>" + message1 + "</h4><p>" + message2 + "</p>";
+        
+        document.body.appendChild(popup);
+
+        setTimeout(function () {
+            document.body.removeChild(popup);
+        }, 3000);
+        }
     </script>
     <script>
         const mathFieldSpan = document.getElementById('math-field');
