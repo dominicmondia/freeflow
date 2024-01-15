@@ -849,13 +849,18 @@ p > label > input,  .form-content > form > input{
     left:50%;
     transform: translate(-50%, -50%);
     position: fixed;
-    background-color: #ffffff;
+    /* background-color: linear-gradient(rgb(138, 225, 246, 0.8), rgb(159, 228, 241, 0.8)); */
+    background-color: #FFFFFF;
+    /* background-image: url('../img/great-job.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: center; */
     border: 1px solid #d4d4d4;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     max-width: 400px; 
-    width: 80%;
+    width: 70%;
     height: auto; 
     max-height: 80vh;
     z-index: 1;
@@ -863,14 +868,35 @@ p > label > input,  .form-content > form > input{
 }
 
 .popup-image {
-    width: 50px; /* Adjust the size of the images */
-    height: 50px;
-    margin-top: -20px; /* Adjust the negative margin to overlap with the top right corner */
-    margin-right: -20px; /* Adjust the negative margin to overlap with the top right corner */
+    width: 60px;
+    height: 60px;
+    margin-top: -20px;
+    margin-right: -20px;
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 2; /* Ensure the image is on top of the popup content */
+    z-index: 2;
+}
+
+.popup-gbutton, .popup-rbutton {
+    display: inline-block;
+    padding: 10px 20px;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.popup-gbutton{
+    background-color: #71F085;
+}
+
+.popup-rbutton{
+    background-color: #F56353;
+}
+
+.popup-gbutton:hover{
+    background-color: #57F06B;
 }
 
 /*    .errorlist {*/

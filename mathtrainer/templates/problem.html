@@ -78,7 +78,7 @@
                     <script>
                         // Show "Great Job!" popup immediately on page load
                         document.addEventListener('DOMContentLoaded', function() {
-                            showPopup('Correct','Great Job!','{% static "img/great-job.png" %}');
+                            showPopup('Correct!','Great Job','{% static "img/great-job.png" %}');
                         });
                     </script>
                 {% endif %}
@@ -140,13 +140,19 @@
         function showPopup(message1, message2, imageSource) {
         var popup = document.createElement("div");
         popup.className = "popup";
-        popup.innerHTML = "<img class='popup-image' src='" + imageSource + "' alt='Popup Image'>" + "<h4>" + message1 + "</h4><p>" + message2 + "</p>";
+        var buttonClass = (message1 === 'Correct!') ? 'popup-gbutton' : 'popup-rbutton';
+        popup.innerHTML = "<img class='popup-image' src='" + imageSource + "' alt='Popup Image'>" + "<h3>" + message1 + "</h3><p>" + message2 + "</p>" + "<button class='" +buttonClass+ "' onclick='closePopup(this)'> Continue </button>";
         
         document.body.appendChild(popup);
 
-        setTimeout(function () {
+        // setTimeout(function () {
+        //     document.body.removeChild(popup);
+        // }, 3000);
+        }
+
+        function closePopup(button) {
+            var popup= button.parentNode;
             document.body.removeChild(popup);
-        }, 3000);
         }
     </script>
     <script>
