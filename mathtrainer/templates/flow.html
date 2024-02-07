@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+    <div class="flows-wrapper">
+        <span class="title" id="id-flow-title">{{ flow.title|titleize }}</span>
+        {% for section in sections %}
+            <div class="section existing">
+                <span class="section-title">{{ section.title|titleize }}</span>
+                <ul class="section-problems">
+                    {% for section_problem in section.problems %}
+                        <li>
+                            <span class="section-problems-item">{{ section_problem }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

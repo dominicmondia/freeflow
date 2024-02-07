@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% block content %}
+
+    {% for problem in problems %}
+        <div class="problem-page">
+            <span class="title">{{ problem.id }}. {{ problem.title | titleize }}</span>
+            <div class="problem-question">
+                {% for line in problem.problem|splitlines %}
+                    <p>{{ line }}</p>
+                {% endfor %}
+            </div>
+
+            <span class="title" id="title" style="display: block">Solution</span>
+            <div class="problem-solution" id="problem-solution" style="display: block">
+                {% for line in problem.solution|splitlines %}
+                    <p>{{ line }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}
+

@@ -4,3 +4,5 @@ from .models import *
 admin.site.register(Problem)
 admin.site.register(UserProfile)
 admin.site.register(ProblemReport)
+admin.site.register(Flow)
+admin.site.register(FlowSection)

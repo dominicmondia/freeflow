@@ -1,5 +1,7 @@
 from django import template
 from titlecase import titlecase
+from nltk.tokenize.punkt import PunktSentenceTokenizer, PunktParameters, PunktLanguageVars
+
 
 register = template.Library()
 
@@ -44,7 +46,7 @@ def dash_length(solved, total):
 
 @register.filter
 def progress_length(solved, total):
-    return solved/total * 100 if solved/total > 0.01 else 1
+    return solved / total * 100 if solved / total > 0.01 else 1
 
 
 @register.filter
@@ -66,3 +68,15 @@ def query_transform(context, **kwargs):
 @register.simple_tag(takes_context=True)
 def take_query(context, **kwargs):
     return context['request'].GET.copy()
+
+
+@register.filter
+def splitlines(string):
+    class MathLang(PunktLanguageVars):
+        sent_end_chars = (".", "?")
+
+    param = PunktParameters()
+    param.abbrev_types = {'dr', 'vs', 'mr', 'mrs', 'ms', 'prof', 'inc'}
+    sentence_splitter = PunktSentenceTokenizer(lang_vars=MathLang())
+    sentence_splitter._params = param
+    return sentence_splitter.tokenize(string)

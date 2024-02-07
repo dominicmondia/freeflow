@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+    <div class="flows-wrapper">
+        <form id="edit-flow" method="POST" action="">
+            {% csrf_token %}
+            <label for="id-flow-title"></label>
+            <input class="title" id="id-flow-title" name="flow-title"
+                   value="{{ flow.title|titleize }}">
+            <span onclick="save_changes()">Save Changes</span>
+            {% for section in sections %}
+                <div class="section existing">
+                    <label for="id-section-title-{{ forloop.counter }}"></label>
+                    <input class="section-title" id="id-section-title-{{ forloop.counter }}"
+                           value="{{ section.title|titleize }}">
+                    <ul class="section-problems">
+                        {% for section_problem in section.problems %}
+                            <li>
+                                <label for="id-section-{{ forloop.parentloop.counter }}-problems-item-{{ forloop.counter }}"></label>
+                                <input class="section-problems-item"
+                                       id="id-section-{{ forloop.parentloop.counter }}-problems-item-{{ forloop.counter }}"
+                                       value="{{ section_problem }}" readonly>
+                                <button class="section-add-minus-button" title="Remove from this section"
+                                        style="background-image: url('{% static 'img/minus.svg' %}')"
+                                        onclick="remove_parent(this)">
+                                </button>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <span class="find-more-btn" onclick="expand_find_more(this)">Find more</span>
+            {% endfor %}
+
+            <div class="section new" onclick="add_new_section(this)">+ Add New Section</div>
+        </form>
+    </div>
+    <script>
+
+        function add_new_section(btn) {
+            let existing_section = document.createElement('div')
+            existing_section.setAttribute('class', 'section existing')
+
+            const new_section_index = btn.parentElement.getElementsByClassName('section').length
+
+            let section_title_label = document.createElement('label')
+            section_title_label.setAttribute('for', 'id-section-title-' + new_section_index)
+            existing_section.append(section_title_label)
+
+            let section_title_input = document.createElement('input')
+            section_title_input.setAttribute('class', 'section-title')
+            section_title_input.setAttribute('id', 'id-section-title-' + new_section_index)
+            section_title_input.setAttribute('value', 'New Section ' + new_section_index)
+            existing_section.append(section_title_input)
+
+            let section_problems = document.createElement('ul')
+            section_problems.setAttribute('class', 'section-problems')
+            existing_section.append(section_problems)
+
+            let find_more_button = document.createElement('span')
+            find_more_button.setAttribute('class', 'find-more-btn')
+            find_more_button.setAttribute('onclick', 'expand_find_more(this)')
+            find_more_button.innerHTML = "Find More"
+
+            btn.insertAdjacentElement("beforebegin", existing_section)
+            btn.insertAdjacentElement("beforebegin", find_more_button)
+        }
+
+        function save_changes() {
+            let title = $("#id-flow-title")[0].value
+            let sections = new Map
+            $(".section-title").map(function () {
+                let items = Array.from(this.parentElement.getElementsByTagName('ul')[0].getElementsByTagName('input')).map(a => a.value)
+                sections.set(this.value.replace(' ', '-').toLowerCase(), String(items))
+            })
+            sections = JSON.stringify(Object.fromEntries(sections))
+
+            $.ajax({
+                type: 'POST',
+                url: window.location.href,
+                data: {
+                    title: title,
+                    sections: sections,
+                    csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+
+                },
+                success: function (response) {
+                    alert(response.message)
+
+                }
+            })
+        }
+    </script>
+    <script>
+        const problem_url = "{% url 'get_all_problems' %}";
+        let problems = null
+
+        $.ajax({
+            type: 'GET',
+            url: problem_url,
+            async: false,
+            success: function (response) {
+                problems = response['problems'];
+            },
+        })
+
+        function remove_parent(btn) {
+            btn.parentElement.remove();
+        }
+
+        function filter_by_value(array, string) {
+            if (string) {
+                return array.filter(problem =>
+                    problem.problem.toLowerCase().includes(string.toLowerCase()) ||
+                    problem.title.replaceAll('-', ' ').toLowerCase().includes(string.toLowerCase())
+                );
+            } else {
+                return [];
+            }
+        }
+
+        /*delaying function to optimize computing efficiency*/
+        function delay(fn, ms) {
+            let timer = 0
+            return function (...args) {
+                clearTimeout(timer)
+                timer = setTimeout(fn.bind(this, ...args), ms || 0)
+            }
+        }
+
+        let find_more_container = document.createElement('div');
+        find_more_container.setAttribute('class', 'find-more-container');
+
+        let find_more_container_title = document.createElement('h2');
+        find_more_container_title.innerHTML = "Let's find something for the section above";
+        find_more_container.append(find_more_container_title);
+
+        let find_more_container_close_btn = document.createElement('button')
+        find_more_container_close_btn.setAttribute('class', 'section-add-minus-button')
+        find_more_container_close_btn.innerHTML = "-"
+        find_more_container_close_btn.onclick = function () {
+            remove_parent(this)
+
+        }
+        find_more_container.append(find_more_container_close_btn)
+
+        let find_more_container_search_label = document.createElement('label');
+        find_more_container_search_label.setAttribute('for', "id-find-more-container-search-input");
+        find_more_container.append(find_more_container_search_label);
+
+        let find_more_container_search_input = document.createElement('input');
+        find_more_container_search_input.type = "text";
+        find_more_container_search_input.id = "id-find-more-container-search-input";
+        find_more_container_search_input.placeholder = "Search for problem keywords"
+        find_more_container.append(find_more_container_search_input)
+
+        function expand_find_more(btn) {
+            btn.insertAdjacentElement('afterend', find_more_container)
+            let search_input = $('div.find-more-container').find("input")
+            search_input[0].value = ''
+            document.querySelectorAll(".find-more-problem-item").forEach(
+                div => {
+                    div.remove()
+                }
+            );
+            search_input.on('input', delay(function () {
+                let filtered_problems = filter_by_value(problems, search_input[0].value);
+
+                document.querySelectorAll(".find-more-problem-item").forEach(
+                    div => {
+                        div.remove()
+                    }
+                );
+
+                for (let item in filtered_problems) {
+                    let find_more_problem_item = document.createElement('div')
+                    find_more_problem_item.setAttribute('class', 'find-more-problem-item')
+
+                    let problem_title = document.createElement('span')
+                    problem_title.innerHTML = filtered_problems[item].title.replaceAll('-', ' ')
+                    find_more_problem_item.append(problem_title)
+
+                    let find_more_problem_summary = document.createElement('div')
+                    find_more_problem_summary.setAttribute('class', 'find-more-problem-summary')
+
+                    let problem = document.createElement('p')
+                    problem.innerHTML = filtered_problems[item].problem
+                    find_more_problem_summary.append(problem)
+                    find_more_problem_item.append(find_more_problem_summary)
+
+                    let add_button = document.createElement('button')
+                    add_button.setAttribute('class', 'section-add-minus-button')
+                    add_button.setAttribute('title', 'Add problem to this section')
+                    add_button.setAttribute('style', 'background-image: url(/static/img/plus.svg)')
+                    find_more_problem_item.append(add_button)
+
+                    add_button.onclick = (e) => {
+                        e.preventDefault()
+                        const current_index = this.parentElement.previousElementSibling.previousElementSibling.lastElementChild.getElementsByTagName("li").length + 1
+                        const current_parent_index = this.parentElement.previousElementSibling.previousElementSibling.getElementsByClassName("section-title")[0].id.slice(-1)
+                        let section_problem_item_container = document.createElement('li')
+                        let section_problem_item_label = document.createElement('label')
+                        section_problem_item_label.setAttribute('for', 'section-' + current_parent_index + '-problems-item-' + current_index)
+                        section_problem_item_container.append(section_problem_item_label)
+                        let section_problem_item = document.createElement('input')
+                        section_problem_item.setAttribute('class', 'section-problems-item')
+                        section_problem_item.setAttribute('id', 'section-' + current_parent_index + '-problems-item-' + current_index)
+                        section_problem_item.setAttribute('value', filtered_problems[item].title)
+                        section_problem_item_container.append(section_problem_item)
+                        section_problem_item.readOnly = true
+                        let minus_button = document.createElement('button')
+                        minus_button.setAttribute('class', 'section-add-minus-button')
+                        minus_button.setAttribute('title', 'Remove from this section')
+                        minus_button.setAttribute('style', 'background-image: url(/static/img/minus.svg)')
+                        minus_button.setAttribute('onclick', "remove_parent(this)")
+                        section_problem_item_container.append(minus_button)
+                        this.parentElement.previousElementSibling.previousElementSibling.lastElementChild.appendChild(section_problem_item_container)
+                    }
+
+
+                    find_more_container.appendChild(find_more_problem_item)
+                }
+
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            }, 500))
+
+        }
+
+
+    </script>
+{% endblock %}

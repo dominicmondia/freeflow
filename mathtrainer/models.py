@@ -38,3 +38,20 @@ class ProblemReport(models.Model):
     def __str__(self):
         return self.problem_id.title
 
+
+class Flow(models.Model):
+    author = models.ForeignKey(User, on_delete=models.SET("anonymous"))
+    title = models.CharField(max_length=150, primary_key=True)
+    public = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+
+class FlowSection(models.Model):
+    problems = models.JSONField(default=list, blank=True)
+    title = models.CharField(max_length=150)
+    flow = models.ForeignKey(Flow, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title

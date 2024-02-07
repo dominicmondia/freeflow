@@ -1,14 +1,16 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 from .filters import ProblemFilter
 from .forms import RegistrationForm, PasswordChangeForm
-from .models import Problem, UserProfile, ProblemReport
-
+from .models import Problem, UserProfile, ProblemReport, Flow, FlowSection
 from sympy import sympify
 import sympy
+import json
 from sympy.parsing.latex import parse_latex
 import re
 
@@ -173,9 +175,10 @@ def profile(request, username):
     user_statistics = {}
 
     for topic in topics:
-        solved_problems = len([Problem.objects.get(title=problem_title) for problem_title in user_profile.history.keys() if
-                               Problem.objects.get(title=problem_title).type == topic and user_profile.history[
-                                   problem_title] == 's'])
+        solved_problems = len(
+            [Problem.objects.get(title=problem_title) for problem_title in user_profile.history.keys() if
+             Problem.objects.get(title=problem_title).type == topic and user_profile.history[
+                 problem_title] == 's'])
         total_number_problems = Problem.objects.filter(type=topic).count()
         user_statistics[topic] = {'solved_problems': solved_problems,
                                   'total_number_problems': total_number_problems}
@@ -226,3 +229,48 @@ def change_password(request):
     else:
         form = PasswordChangeForm(request.user)
     return render(request, 'change_password.html', {'form': form})
+
+
+def flows(request):
+    plans = Flow.objects.all()
+    return render(request, 'flows.html')
+
+
+def flow(request, pk):
+    plan = Flow.objects.get(title=pk)
+    sections = FlowSection.objects.filter(flow=plan)
+
+    return render(request, 'flow.html', {'flow': plan, 'sections': sections})
+
+
+def modify_flow(request, pk):
+    plan = Flow.objects.get(title=pk)
+    flow_sections = FlowSection.objects.filter(flow=plan)
+    if request.method == 'GET':
+        return render(request, 'modify_flow.html',
+                      {'flow': plan, "sections": flow_sections})
+    else:
+        new_flow_title = request.POST['title'].lower().replace(' ', '-')
+        plan.delete()
+        new_flow = Flow(title=new_flow_title, author=request.user)
+        new_flow.save()
+        flow_sections = json.loads(request.POST['sections'])
+        for section_title in flow_sections:
+            problems = flow_sections[section_title].split(',')
+            problems = [item for item in problems if item != '']
+            section = FlowSection(title=section_title, problems=problems, flow=new_flow)
+            section.save()
+
+        return JsonResponse({'message': flow_sections})
+
+
+def get_all_problems(request):
+    problems = Problem.objects.all()
+
+    return JsonResponse({'problems': list(problems.values())})
+
+
+@staff_member_required
+def all_problems_view(request):
+    problems = Problem.objects.all()[4000:]
+    return render(request, 'all_problems_view.html', {'problems': problems})

@@ -1,4 +1,3 @@
-/*postgres://htbwklpyodagjz:ef12bc09897ff53189e34508811e8bb00368978d96b5e014b44588467719f208@ec2-54-164-138-85.compute-1.amazonaws.com:5432/dbes151q4rafqf*/
 @media screen and (max-width: 600px) {
     .problem-page {
         font-size: 10px;
@@ -19,8 +18,9 @@ body {
 main {
     display: flex;
     margin-left: auto;
+    width: 100svw;
     margin-right: auto;
-    min-height: 86svh;
+    min-height: 88svh;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -39,6 +39,7 @@ header {
 
 .nav-container {
     display: flex;
+    white-space: nowrap;
     align-self: center;
     align-items: center;
     padding: 0 10px;
@@ -75,9 +76,12 @@ header {
     opacity: 1;
 }
 
+.nav-link:last-child{
+    margin-left: auto;
+}
 
-.nav-item:nth-child(2) {
-    margin-right: auto;
+.dropdown:last-child {
+    margin-left: auto;
 }
 
 #profile-dropdown-btn {
@@ -139,7 +143,6 @@ footer {
     width: 100svw;
 }
 
-
 footer > .footer-container {
     margin: auto;
     gap: 2em;
@@ -164,9 +167,10 @@ footer * {
 }
 
 .homepage {
+    display: flex;
     width: 100vw;
     max-width: 1200px;
-    justify-content: center;
+    align-items: center;
 }
 
 
@@ -731,7 +735,7 @@ tr > .status-cell, tr > .difficulty-cell {
     display: block;
     width: 90%;
     max-width: 700px;
-    margin: 2rem auto;
+    margin: 1rem auto;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 }
 
@@ -826,7 +830,7 @@ tr > .status-cell, tr > .difficulty-cell {
     font-size: 0.8em;
 }
 
-p > label > input,  .form-content > form > input{
+p > label > input, .form-content > form > input {
     font-family: Poppins, sans-serif;
     font-size: 1em;
     padding: 0.5em;
@@ -844,41 +848,215 @@ p > label > input,  .form-content > form > input{
     cursor: pointer;
 }
 
-.popup {
-    top: 50%;
-    left:50%;
-    transform: translate(-50%, -50%);
-    position: fixed;
-    background-color: #ffffff;
-    border: 1px solid #d4d4d4;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 400px; 
+.errorlist {
+    font-size: 0.8em;
+    list-style: none;
+    margin: 0.5em auto 0;
+    padding: 0;
+    width: 100%;
+}
+
+
+.flows-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 95svw;
+    max-width: 1100px;
+    margin: 2em auto;
+    align-content: center;
+}
+
+.flows-wrapper > form {
+    width: 100%;
+}
+
+.flows-wrapper > form > .title, .flows-wrapper > .title {
+    font: inherit;
+    width: 100%;
+    max-width: none;
+    justify-content: left;
+    font-size: 2em;
+    font-weight: 300;
+    border: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.flows-wrapper > .title{
+    margin-bottom: 1em;
+}
+
+.flows-wrapper > form > span:first-of-type  {
+    margin: 0 0 2rem auto;
+    cursor: pointer;
+}
+
+.flows-wrapper > form > span:hover {
+    text-decoration: underline;
+}
+
+.flows-wrapper > .title:focus {
+    outline: 0;
+}
+
+.section {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 1em;
+}
+
+.existing{
+    border: solid 2px #C2DFE3;
+    position: relative;
+}
+
+.section-title {
+    display: flex;
+    font: inherit;
+    font-size: 1em;
+    font-weight: 500;
+    padding: 0.8em;
+    background-color: #C2DFE3;
+    width: 100%;
+    border: 0;
+}
+
+.section-title:focus {
+    outline: none;
+}
+
+.section-problems {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.section-problems > li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: left;
+    font: inherit;
+    margin: 0;
+    padding: 0.5em 2em;
+    border-top: solid 2px #C2DFE3;
+}
+
+.section-add-minus-button {
+    background-size: 100%;
+    cursor: pointer;
+    border: 0;
+    height: 0.8em;
+    width: auto;
+    border-radius: 50%;
+    padding: 0.8em;
+    margin-left: auto;
+}
+
+.section-add-minus-button:hover {
+    transform: scale(120%);
+}
+
+.section-problems-item {
+    display: flex;
+    font: inherit;
+    font-size: 0.8em;
+    height: 100%;
+    border: 0;
+}
+
+input.section-problems-item {
     width: 80%;
-    height: auto; 
-    max-height: 80vh;
-    z-index: 1;
-    text-align: center;
 }
 
-.popup-image {
-    width: 50px; /* Adjust the size of the images */
-    height: 50px;
-    margin-top: -20px; /* Adjust the negative margin to overlap with the top right corner */
-    margin-right: -20px; /* Adjust the negative margin to overlap with the top right corner */
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 2; /* Ensure the image is on top of the popup content */
+.section-problems-item:focus {
+    outline: 0;
 }
 
-/*    .errorlist {*/
-/*        font-size: 0.8em;*/
-/*        list-style: none;*/
-/*        margin: 0.5em auto 0;*/
-/*        padding: 0;*/
-/*        width: 100%;*/
-/*    }*/
+.find-more-btn {
+    width: fit-content;
+    margin-left: auto;
+    padding: 0.2em 0 0.8em;
+    cursor: pointer;
+}
 
-/*}*/
+.find-more-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    margin: 1em 0;
+}
+
+.find-more-container > h2 {
+    display: flex;
+    margin: 0.5em 0;
+    width: 70%;
+    font-size: 1.2em;
+    font-weight: 600;
+    align-items: center;
+}
+
+.find-more-container > button {
+    display: flex;
+    align-content: center;
+    font-size: 3em;
+    background: none;
+    width: fit-content;
+    height: fit-content;
+    padding: 0;
+    margin-right: 2.1rem;
+}
+
+
+.find-more-container > input {
+    display: flex;
+    font: inherit;
+    padding: 0.5em;
+    font-size: 0.8em;
+    width: 80%;
+    max-width: 400px;
+    background: #c2dfe3 linear-gradient(rgba(255, 255, 255, 0.50), rgba(255, 255, 255, 0.50));
+    border: 0;
+    border-radius: 10px;
+}
+
+.find-more-container > input:focus {
+    outline: 0;
+    background: #c2dfe3 linear-gradient(rgba(255, 255, 255, 0.40), rgba(255, 255, 255, 0.40))
+}
+
+.find-more-problem-item {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+    gap: 1em;
+    margin: 1em 0;
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.25);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.find-more-problem-item > * {
+    display: flex;
+    flex: 1;
+    flex-basis: 0;
+}
+
+.find-more-problem-item > span {
+    max-width: 300px;
+}
+
+.find-more-problem-item > button {
+    max-width: fit-content;
+    margin-right: 2.1em;
+}
+
+.new {
+    border: dashed 2px #C2DFE3;
+    padding: 0.8em;
+    cursor: pointer;
+}

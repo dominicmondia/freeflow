@@ -5,7 +5,9 @@
     <div class="problem-page">
         <span class="title">{{ problem.title | titleize }}</span>
         <div class="problem-question">
-            <p>{{ problem.problem }}</p>
+            {% for line in problem.problem|splitlines %}
+                <p>{{ line }}</p>
+            {% endfor %}
             <form class="answer-form" id="answer-form" method="post" action="">
                 {% csrf_token %}
                 <label>
@@ -64,23 +66,9 @@
                 {% if message|stringyfy == "attempted" %}
                     <button class="show-solution-btn" id="show-solution-btn">Show Solution</button>
                 {% elif message|stringyfy == "incorrect" %}
-                    <!-- <p>Not quite, Try again!</p> -->
-                    <!-- <button class="show-popup-btn" onclick="showPopup('Not quite, Try again!')">Try again</button> -->
-                    <script>
-                        // Show incorrect popup immediately on page load
-                        document.addEventListener('DOMContentLoaded', function() {
-                            showPopup('Not quite!','Try Again', '{% static "img/try-again.png" %}');
-                        });
-                    </script>
+                    <p>Not quite, Try again!</p>
                 {% else %}
-                    <!-- <p>Great Job!</p> -->
-                    <!-- <button class="show-popup-btn" onclick="showPopup('Good Job!')">Great Job</button> -->
-                    <script>
-                        // Show "Great Job!" popup immediately on page load
-                        document.addEventListener('DOMContentLoaded', function() {
-                            showPopup('Correct','Great Job!','{% static "img/great-job.png" %}');
-                        });
-                    </script>
+                    <p>Great Job!</p>
                 {% endif %}
             {% endfor %}
             {% if not user.is_authenticated %}
@@ -100,7 +88,9 @@
 
         <span class="title" id="title" style="display: none">Solution</span>
         <div class="problem-solution" id="problem-solution" style="display: none">
-            {{ problem.solution }}
+            {% for line in problem.solution|splitlines %}
+                <p>{{ line }}</p>
+            {% endfor %}
         </div>
     </div>
     <div class="popup-form" id="popup-form">
@@ -119,7 +109,7 @@
         </div>
 
     </div>
-    
+
     <script>
         const el = document.getElementById("show-solution-btn");
         if (el) {
@@ -135,18 +125,6 @@
 
         function openForm() {
             document.getElementById("popup-form").style.display = "flex";
-        }
-
-        function showPopup(message1, message2, imageSource) {
-        var popup = document.createElement("div");
-        popup.className = "popup";
-        popup.innerHTML = "<img class='popup-image' src='" + imageSource + "' alt='Popup Image'>" + "<h4>" + message1 + "</h4><p>" + message2 + "</p>";
-        
-        document.body.appendChild(popup);
-
-        setTimeout(function () {
-            document.body.removeChild(popup);
-        }, 3000);
         }
     </script>
     <script>
